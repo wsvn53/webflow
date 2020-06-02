@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/alecthomas/participle"
 	"github.com/alecthomas/participle/lexer"
+	"strings"
 )
 
 type Flow struct {
@@ -22,6 +23,14 @@ type FlowField struct {
 	Variable	*string		`"$" @(Ident)`
 	String 		*string 	`| @(Ident | String | RawString)`
 	Int			*int		`| @Int`
+}
+
+func (command *FlowCommand) FieldsString() string {
+	var fs []string
+	for _, field := range command.Fields {
+		fs = append(fs, field.ToString())
+	}
+	return fmt.Sprintf("[%s]", strings.Join(fs, "], ["))
 }
 
 func (field *FlowField) ToString() string {
