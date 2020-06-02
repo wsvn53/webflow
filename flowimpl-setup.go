@@ -1,5 +1,7 @@
 package main
 
+/* Impl for all chromedp environment Setup operation commands */
+
 // impl [timeout] command
 type FlowImplTimeout FlowImplBase
 func (impl *FlowImplTimeout) Do() error {
