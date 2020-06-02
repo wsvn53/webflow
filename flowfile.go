@@ -52,3 +52,31 @@ func FlowFromString(flowContents string) *Flow {
 
 	return flow
 }
+
+func (flow *Flow) CommandByName(name string) *FlowCommand {
+	if flow.FlowCommands == nil {
+		return nil
+	}
+
+	for _, cmd := range flow.FlowCommands {
+		if *cmd.Name == name {
+			return cmd
+		}
+	}
+
+	return nil
+}
+
+func (flow *Flow) WalkCommands(walkFunc func(i int, cmd *FlowCommand, stop *bool)) {
+	if flow.FlowCommands == nil {
+		return
+	}
+
+	var stop bool
+	for i, cmd := range flow.FlowCommands {
+		walkFunc(i, cmd, &stop)
+		if stop == true {
+			return
+		}
+	}
+}

@@ -7,19 +7,34 @@ import (
 
 func TestFlowFromString(t *testing.T) {
 	flowString := `
-open	"https://www.baidu.com/";
-timeout 	30;
-text $body_text  "body.div";
-eval "console.log('hello world!')";
-eval $result 	"1 + 1";
-`
+	open	"https://www.example.com/";
+	timeout 	30;
+	text $body_text  "body.div";
+	eval "console.log('hello world!');";
+	eval $result 	"1 + 1";
+	`
 	flow := FlowFromString(flowString)
 
-	for _, c := range flow.FlowCommands {
-		fmt.Println(*c.Name, "=>", len(c.Fields))
-		for _, f := range c.Fields {
-			fmt.Println(" - ", f.ToString())
-		}
+	// test full flow parsing
+	cmd := flow.CommandByName("open")
+	fmt.Println("==>", *cmd.Name, cmd.Fields[0].ToString())
+	if cmd == nil || cmd.Fields[0].ToString() != "https://www.example.com/" {
+		t.Error("Flow parse not as expected!")
 	}
+
+	// test walk commands
+	flow.WalkCommands(func(i int, cmd *FlowCommand, stop *bool) {
+		fmt.Printf("> Step %d: %s args(%d)\n", i + 1, *cmd.Name, len(cmd.Fields))
+	})
+
+	// test raw string parsing
+	rawString := "console.log('rawstring')\nconsole.log('line 2')"
+	flowRawstring := "eval `" + rawString + "`"
+	flow = FlowFromString(flowRawstring)
+	evalCmd := flow.CommandByName("eval")
+	if evalCmd == nil || evalCmd.Fields[0].ToString() != rawString {
+		t.Error("RawString parse not as expected!")
+	}
+	fmt.Printf("==> RawString:\n%s\n", evalCmd.Fields[0].ToString())
 }
 
