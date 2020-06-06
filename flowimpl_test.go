@@ -13,6 +13,13 @@ func TestNewFlowImpl(t *testing.T) {
 	impl := NewFlowImpl(cmd)
 	if impl == nil {
 		t.Error("NewFlowImpl not as expected.")
+		return
 	}
-	fmt.Println("==>", *impl.Command().Name, impl.Command().FieldsString())
+
+	cmd = impl.Command()
+	if cmd == nil {
+		t.Error("Get command's impls failed.")
+		return
+	}
+	fmt.Println("==>", *cmd.Name, cmd.FieldsString())
 }
