@@ -1,14 +1,21 @@
 package main
 
+import (
+	"context"
+	"strconv"
+	"time"
+)
+
 /* Impl for all DOM operation commands */
 
 // impl [timeout] command
 type FlowImplTimeout FlowImplBase
 
 func (impl *FlowImplTimeout) Do(args...interface{}) error {
-	if len(args) == 0 {
-		return nil
-	}
+	browser := args[0].(*Browser)
+	timeout, _ := strconv.Atoi(impl.Command().Fields[0].ToString())
+	browser.chromeContext, browser.chromeCancel = context.WithTimeout(
+		browser.chromeContext, time.Second * time.Duration(timeout) )
 	return nil
 }
 

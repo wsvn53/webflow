@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"github.com/chromedp/chromedp"
 	"log"
 )
@@ -42,6 +43,7 @@ func (browser *Browser) Run() error {
 		if impl.Type() == FlowImplTypeFlag {
 			return
 		}
+		fmt.Println("==> Running Task:", *impl.Command().Name)
 		err := impl.Do(browser)
 		assertErr("Run", err)
 	})
