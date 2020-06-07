@@ -10,6 +10,8 @@ import (
 type Flow struct {
 	contents 	string
 	FlowCommands	[]*FlowCommand		`{ @@ }`
+
+	flowImpls 		[]IFlowImpl
 }
 
 type FlowCommand struct {
@@ -76,16 +78,37 @@ func (flow *Flow) CommandByName(name string) *FlowCommand {
 	return nil
 }
 
-func (flow *Flow) WalkCommands(walkFunc func(i int, cmd *FlowCommand, stop *bool)) {
-	if flow.FlowCommands == nil {
+func (flow *Flow) Impls() []IFlowImpl {
+	if len(flow.flowImpls) > 0 {
+		return flow.flowImpls
+	}
+
+	for _, cmd := range flow.FlowCommands {
+		flow.flowImpls = append(flow.flowImpls, NewFlowImpl(cmd))
+	}
+
+	return flow.flowImpls
+}
+
+func (flow *Flow) Walk(walkFunc func(i int, impl IFlowImpl, stop *bool)) {
+	if flow.Impls() == nil {
 		return
 	}
 
 	var stop bool
-	for i, cmd := range flow.FlowCommands {
-		walkFunc(i, cmd, &stop)
+	for i, impl := range flow.Impls() {
+		walkFunc(i, impl, &stop)
 		if stop == true {
 			return
 		}
 	}
+}
+
+func (flow *Flow) WalkByType(implType FlowImplType, walkFunc func(i int, impl IFlowImpl, stop *bool)) {
+	flow.Walk(func(i int, impl IFlowImpl, stop *bool) {
+		if impl.Type() != implType {
+			return
+		}
+		walkFunc(i, impl, stop)
+	})
 }

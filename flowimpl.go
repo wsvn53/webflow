@@ -3,39 +3,42 @@ package main
 import "strings"
 
 type FlowImplBase struct {
-	command 	*FlowCommand
+	implType 		FlowImplType
+	command 		*FlowCommand
 }
 
 type IFlowImpl interface {
-	Do()		error
+	Do(args...interface{})		error
 	Command()	*FlowCommand
+	Type()		FlowImplType
 }
 
-// impl [open] command
-type FlowImplOpen FlowImplBase
-
-func (impl *FlowImplOpen) Do() error {
-	return nil
-}
-
-func (impl *FlowImplOpen) Command() *FlowCommand {
-	return impl.command
-}
+// flow impl type
+type FlowImplType int
+const (
+	FlowImplTypeFlag     = 0
+	FlowImplTypeCtrl     = iota
+	FlowImplTypeNavigate = iota
+	FlowImplTypeDom      = iota
+	FlowImplTypeJsop     = iota
+)
 
 func NewFlowImpl(command *FlowCommand) IFlowImpl {
 	switch strings.ToLower(*command.Name) {
 	case "open":
-		return &FlowImplOpen{ command: command }
+		return &FlowImplOpen{ command: command, implType: FlowImplTypeNavigate }
 	case "text":
-		return &FlowImplText{ command: command }
+		return &FlowImplText{ command: command, implType: FlowImplTypeDom }
 	case "eval":
-		return &FlowImplEval{ command: command }
+		return &FlowImplEval{ command: command, implType: FlowImplTypeJsop }
 	case "timeout":
-		return &FlowImplTimeout{ command: command }
+		return &FlowImplTimeout{ command: command, implType: FlowImplTypeCtrl }
 	case "useragent":
-		fallthrough
-	case "user-agent":
-		return &FlowImplUserAgent{ command: command }
+		return &FlowImplUserAgent{ command: command, implType: FlowImplTypeFlag}
+	case "screen":
+		return &FlowImplScreen{ command: command, implType: FlowImplTypeFlag}
+	case "headless":
+		return &FlowImplHeadless{ command: command, implType: FlowImplTypeFlag}
 	}
 	return nil
 }

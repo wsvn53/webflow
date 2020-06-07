@@ -23,8 +23,9 @@ func TestFlowFromString(t *testing.T) {
 	}
 
 	// test walk commands
-	flow.WalkCommands(func(i int, cmd *FlowCommand, stop *bool) {
-		fmt.Printf("> Step %d: %s args( %s )\n", i + 1, *cmd.Name, cmd.FieldsString())
+	flow.Walk(func(i int, impl IFlowImpl, stop *bool) {
+		fmt.Printf("> Step %d: %s args( %s )\n",
+			i + 1, *impl.Command().Name, impl.Command().FieldsString())
 	})
 
 	// test raw string parsing
