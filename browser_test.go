@@ -11,11 +11,11 @@ func TestNewBrowser(t *testing.T) {
 	headless false;
 	timeout 	10;
 	open	"https://www.example.com/";
-	text 	$body_text  "body.div";
-	eval 	"console.log('hello world!');";
-	eval 	$result 	"1 + 1";
-	
-`
+	text 	$body_text  "body div";
+	eval 	"console.log(\"hello world!\" + body_text);";
+	eval 	$result 	"(1 + 1).toString()";
+	eval 	"console.log(result)";
+	`
 	flow := FlowFromString(flowString)
 	b := NewBrowser(flow)
 	fmt.Println(b)

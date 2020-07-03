@@ -5,12 +5,15 @@ import (
 	"fmt"
 	"github.com/chromedp/chromedp"
 	"log"
+	"strings"
 )
 
 type Browser struct {
 	webFlow 		*Flow
 	chromeContext 	context.Context
 	chromeCancel 	context.CancelFunc
+
+	variableMaps	map[string]string
 }
 
 func NewBrowser(flow *Flow) *Browser {
@@ -28,13 +31,14 @@ func NewBrowser(flow *Flow) *Browser {
 	ctx, cancel := chromedp.NewExecAllocator(c, chromeOpts...)
 	ctx, cancel = chromedp.NewContext(ctx,
 		chromedp.WithLogf(log.Printf),
-		chromedp.WithDebugf(log.Printf),
+		//chromedp.WithDebugf(log.Printf),
 		chromedp.WithErrorf(log.Printf))
 
 	return &Browser{
 		webFlow: flow,
 		chromeContext: ctx,
 		chromeCancel: cancel,
+		variableMaps: map[string]string{},
 	}
 }
 
@@ -49,4 +53,23 @@ func (browser *Browser) Run() error {
 	})
 
 	return nil
+}
+
+func (browser *Browser) SetVariable(name, value string) {
+	browser.variableMaps[name] = value
+
+	// store variable to web context
+	escapedValue := strings.ReplaceAll(value, "\n", "\\n")
+	escapedValue = strings.ReplaceAll(escapedValue, "\r", "\\r")
+	escapedValue = strings.ReplaceAll(escapedValue, "\"", "\\\"")
+	setScript := fmt.Sprintf(`window["%s"] = "%s";`,
+		strings.TrimLeft(name, "$"), escapedValue,
+		)
+
+	var result string
+	err := chromedp.Run(browser.chromeContext,
+		chromedp.Evaluate(setScript, &result),
+	)
+
+	assertErr("SetVariable", err)
 }
