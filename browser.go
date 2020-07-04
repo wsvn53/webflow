@@ -63,6 +63,7 @@ func (browser *Browser) Run() error {
 		err := impl.Do(browser)
 		assertErr("Run", err)
 	})
+	_ = chromedp.Cancel(browser.chromeContext)
 	return nil
 }
 

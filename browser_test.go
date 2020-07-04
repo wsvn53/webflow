@@ -10,7 +10,7 @@ func TestNewBrowser(t *testing.T) {
 	headless false;
 	timeout 	10;
 	debug		false;
-	log		true;
+	log		false;
 	open	"https://www.example.com/";
 	text 	$body_text  "body div";
 	eval 	"console.log(\"hello world!\" + $body_text);";
