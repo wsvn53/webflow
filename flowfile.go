@@ -106,7 +106,7 @@ func (flow *Flow) Walk(walkFunc func(i int, impl IFlowImpl, stop *bool)) {
 
 func (flow *Flow) WalkByType(implType FlowImplType, walkFunc func(i int, impl IFlowImpl, stop *bool)) {
 	flow.Walk(func(i int, impl IFlowImpl, stop *bool) {
-		if impl.Type() != implType {
+		if impl == nil || impl.Type() != implType {
 			return
 		}
 		walkFunc(i, impl, stop)

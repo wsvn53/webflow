@@ -2,9 +2,6 @@ package main
 
 import "github.com/chromedp/chromedp"
 
-/* Impl for browser navigation operation commands */
-
-// impl [open] command
 type FlowImplOpen FlowImplBase
 
 func (impl *FlowImplOpen) Do(args...interface{}) error {
@@ -13,6 +10,9 @@ func (impl *FlowImplOpen) Do(args...interface{}) error {
 	err := chromedp.Run(browser.chromeContext, chromedp.Navigate(url))
 	return err
 }
+
+//go:generate make IMPL_TYPE=FlowImplOpen gen-impl
+
 
 func (impl *FlowImplOpen) Command() *FlowCommand {
 	return impl.command

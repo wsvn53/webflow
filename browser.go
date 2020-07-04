@@ -14,6 +14,7 @@ type Browser struct {
 	chromeCancel 	context.CancelFunc
 
 	variableMaps	map[string]string
+	logFunc			*func (a ...interface{})(n int, err error)
 }
 
 func NewBrowser(flow *Flow) *Browser {
@@ -29,10 +30,17 @@ func NewBrowser(flow *Flow) *Browser {
 
 	c := context.Background()
 	ctx, cancel := chromedp.NewExecAllocator(c, chromeOpts...)
-	ctx, cancel = chromedp.NewContext(ctx,
+	logOptions := []chromedp.ContextOption{
 		chromedp.WithLogf(log.Printf),
-		//chromedp.WithDebugf(log.Printf),
-		chromedp.WithErrorf(log.Printf))
+		chromedp.WithErrorf(log.Printf),
+	}
+	flow.WalkByType(FlowImplTypeLog, func(i int, impl IFlowImpl, stop *bool) {
+		var opt chromedp.ContextOption
+		if _ = impl.Do(&opt); opt != nil {
+			logOptions = append(logOptions, opt)
+		}
+	})
+	ctx, cancel = chromedp.NewContext(ctx, logOptions...)
 
 	return &Browser{
 		webFlow: flow,
@@ -44,29 +52,31 @@ func NewBrowser(flow *Flow) *Browser {
 
 func (browser *Browser) Run() error {
 	browser.webFlow.Walk(func(i int, impl IFlowImpl, stop *bool) {
-		if impl.Type() == FlowImplTypeFlag {
+		if impl == nil || impl.Type() == FlowImplTypeFlag || impl.Type() == FlowImplTypeLog {
 			return
 		}
-		fmt.Println("==> Running Task:", *impl.Command().Name)
+		if browser.logFunc != nil {
+			_, _ = (*browser.logFunc)("> Task:",
+				*impl.Command().Name, impl.Command().FieldsString(),
+				)
+		}
 		err := impl.Do(browser)
 		assertErr("Run", err)
 	})
-
 	return nil
 }
 
-func (browser *Browser) SetVariable(name, value string) {
-	browser.variableMaps[name] = value
+func (browser *Browser) SetVariable(name string, value interface{}) {
+	valueText := fmt.Sprintf("%v", value)
+	browser.variableMaps[name] = valueText
 
 	// store variable to web context
-	escapedValue := strings.ReplaceAll(value, "\n", "\\n")
+	escapedValue := strings.ReplaceAll(valueText, "\n", "\\n")
 	escapedValue = strings.ReplaceAll(escapedValue, "\r", "\\r")
 	escapedValue = strings.ReplaceAll(escapedValue, "\"", "\\\"")
-	setScript := fmt.Sprintf(`window["%s"] = "%s";`,
-		strings.TrimLeft(name, "$"), escapedValue,
-		)
+	setScript := fmt.Sprintf(`window["%s"] = "%s";`, name, escapedValue)
 
-	var result string
+	var result interface{}
 	err := chromedp.Run(browser.chromeContext,
 		chromedp.Evaluate(setScript, &result),
 	)

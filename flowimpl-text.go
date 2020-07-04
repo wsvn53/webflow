@@ -7,9 +7,6 @@ import (
 	"strings"
 )
 
-/* Impl for all DOM operation commands */
-
-// impl [text] command
 type FlowImplText FlowImplBase
 
 func (impl *FlowImplText) Do(args...interface{}) error {
@@ -28,6 +25,9 @@ func (impl *FlowImplText) Do(args...interface{}) error {
 	browser.SetVariable(variableName, textContent)
 	return err
 }
+
+//go:generate make IMPL_TYPE=FlowImplText gen-impl
+
 
 func (impl *FlowImplText) Command() *FlowCommand {
 	return impl.command

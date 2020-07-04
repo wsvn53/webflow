@@ -6,9 +6,6 @@ import (
 	"time"
 )
 
-/* Impl for all DOM operation commands */
-
-// impl [timeout] command
 type FlowImplTimeout FlowImplBase
 
 func (impl *FlowImplTimeout) Do(args...interface{}) error {
@@ -18,6 +15,9 @@ func (impl *FlowImplTimeout) Do(args...interface{}) error {
 		browser.chromeContext, time.Second * time.Duration(timeout) )
 	return nil
 }
+
+//go:generate make IMPL_TYPE=FlowImplTimeout gen-impl
+
 
 func (impl *FlowImplTimeout) Command() *FlowCommand {
 	return impl.command

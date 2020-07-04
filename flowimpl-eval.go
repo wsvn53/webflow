@@ -5,9 +5,6 @@ import (
 	"strings"
 )
 
-/* Impl for all Javascript operation commands */
-
-// impl [eval] command
 type FlowImplEval FlowImplBase
 
 func (impl *FlowImplEval) Do(args...interface{}) error {
@@ -19,7 +16,7 @@ func (impl *FlowImplEval) Do(args...interface{}) error {
 		script = impl.command.Fields[1].ToString()
 	}
 
-	var result string
+	var result interface{}
 	_ = chromedp.Run(browser.chromeContext,
 		chromedp.Evaluate(script, &result),
 	)
@@ -30,6 +27,9 @@ func (impl *FlowImplEval) Do(args...interface{}) error {
 
 	return nil
 }
+
+//go:generate make IMPL_TYPE=FlowImplEval gen-impl
+
 
 func (impl *FlowImplEval) Command() *FlowCommand {
 	return impl.command
