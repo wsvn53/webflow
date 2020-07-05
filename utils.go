@@ -10,6 +10,6 @@ func assertErr(tag string, err error) {
 		return
 	}
 
-	fmt.Printf("[!] %s: %s\n", tag, err)
+	_, _ = fmt.Fprintf(os.Stderr, "[!] %s: %s\n", tag, err)
 	os.Exit(1)
 }

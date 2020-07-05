@@ -18,8 +18,6 @@ type FlowImplType int
 const (
 	FlowImplTypeFlag     = 0
 	FlowImplTypeCtrl     = iota
-	FlowImplTypeNavigate = iota
-	FlowImplTypeDom      = iota
 	FlowImplTypeOP       = iota		// common operation
 	FlowImplTypeLog      = iota
 	FlowImplTypeNull     = iota		// unknown task
@@ -27,18 +25,22 @@ const (
 
 func NewFlowImpl(command *FlowCommand) IFlowImpl {
 	switch strings.ToLower(*command.Name) {
-	case "open":
-		return &FlowImplOpen{ command: command, implType: FlowImplTypeNavigate }
-	case "text":
-		return &FlowImplText{ command: command, implType: FlowImplTypeDom }
 	case "timeout":
 		return &FlowImplTimeout{ command: command, implType: FlowImplTypeCtrl }
+	case "open":
+		return &FlowImplOpen{ command: command, implType: FlowImplTypeOP }
+	case "text":
+		return &FlowImplText{ command: command, implType: FlowImplTypeOP }
+	case "click":
+		return &FlowImplClick{ command: command, implType: FlowImplTypeOP }
 	case "eval":
 		return &FlowImplEval{ command: command, implType: FlowImplTypeOP}
 	case "print":
 		return &FlowImplPrint{ command: command, implType: FlowImplTypeOP }
 	case "log":
 		return &FlowImplLog{ command: command, implType: FlowImplTypeOP }
+	case "wait":
+		return &FlowImplWait{ command: command, implType: FlowImplTypeOP }
 	case "useragent":
 		return &FlowImplUserAgent{ command: command, implType: FlowImplTypeFlag }
 	case "screen":

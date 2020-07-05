@@ -1,5 +1,6 @@
 all:
-
+	go generate
+	go build
 
 gen-impl:
 	@[[ -z "$$IMPL_TYPE" ]] && echo "IMPL_TYPE is empty!" && exit 1; exit 0;
