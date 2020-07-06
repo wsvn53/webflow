@@ -1,0 +1,10 @@
+screen  	"1024x800";
+headless 	false;
+timeout 	30000;
+debug		false;
+log		false;
+open	"https://www.toutiao.com/search/?keyword=Facebook";
+wait	"body";
+wait    "#J_section_6";
+eval    $output     "var output = ''; document.querySelectorAll('a.link.title').forEach(function(e, i){ output += e.textContent + ' | ' + e.href + '\\n'; }); output";
+print   $output;

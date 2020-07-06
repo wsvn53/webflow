@@ -13,17 +13,18 @@ func TestNewBrowser(t *testing.T) {
 	log		false;
 	open	"https://www.baidu.com/";
 	wait	".soutu-btn";
-	text 	$body_text  "#s-top-left";
+	value 	$body_text  "#s-top-left";
 	eval 	"console.log($body_text);";
 	eval 	$result 	"9 * 123";
 	eval 	"console.log($result)";
 	print	$result;
 	print	$body_text;
 	wait	500;
-	text 	$atext	"a";
+	value 	$atext	"a";
 	print	$atext;
-	click	".soutu-btn";
-	wait	2000;
+	keys	"#kw" 	$atext;
+	click	"#su";
+	wait	5000;
 	`
 	flow := FlowFromString(flowString)
 	b := NewBrowser(flow)

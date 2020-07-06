@@ -29,8 +29,10 @@ func NewFlowImpl(command *FlowCommand) IFlowImpl {
 		return &FlowImplTimeout{ command: command, implType: FlowImplTypeCtrl }
 	case "open":
 		return &FlowImplOpen{ command: command, implType: FlowImplTypeOP }
-	case "text":
-		return &FlowImplText{ command: command, implType: FlowImplTypeOP }
+	case "value":
+		return &FlowImplValue{ command: command, implType: FlowImplTypeOP }
+	case "keys":
+		return &FlowImplKeys{ command: command, implType: FlowImplTypeOP }
 	case "click":
 		return &FlowImplClick{ command: command, implType: FlowImplTypeOP }
 	case "eval":

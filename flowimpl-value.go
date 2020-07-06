@@ -7,9 +7,9 @@ import (
 	"strings"
 )
 
-type FlowImplText FlowImplBase
+type FlowImplValue FlowImplBase
 
-func (impl *FlowImplText) Do(args...interface{}) error {
+func (impl *FlowImplValue) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
 	variableName := impl.command.Fields[0].ToString()
 	textSelector := impl.command.Fields[1].ToString()
@@ -29,10 +29,10 @@ func (impl *FlowImplText) Do(args...interface{}) error {
 //go:generate make IMPL_TYPE=FlowImplText gen-impl
 
 
-func (impl *FlowImplText) Command() *FlowCommand {
+func (impl *FlowImplValue) Command() *FlowCommand {
 	return impl.command
 }
 
-func (impl *FlowImplText) Type() FlowImplType {
+func (impl *FlowImplValue) Type() FlowImplType {
 	return impl.implType
 }
