@@ -20,8 +20,8 @@ func (impl *FlowImplPrintf) Do(args...interface{}) error {
 	var fields []interface{}
 	for _, v := range impl.command.Fields[1:] {
 		vs := v.ToString()
-		if _, ok := browser.variableMaps[vs]; ok && strings.HasPrefix(vs, "$") {
-			fields = append(fields, browser.variableMaps[vs])
+		if value, ok := browser.variableMaps[vs]; ok && strings.HasPrefix(vs, "$") {
+			fields = append(fields, value)
 			continue
 		}
 		fields = append(fields, vs)
