@@ -3,9 +3,15 @@ package main
 import (
 	"fmt"
 	"os"
+	"reflect"
+	"strings"
 )
 
 type FlowImplLog FlowImplBase
+
+func (impl *FlowImplLog) Type() FlowImplType {
+	return FlowImplTypeOP
+}
 
 func (impl *FlowImplLog) Do(args...interface{}) error {
 	if len(args) == 0 {
@@ -26,11 +32,23 @@ func (impl *FlowImplLog) Do(args...interface{}) error {
 
 //go:generate make IMPL_TYPE=FlowImplLog gen-impl
 
+func init() {
+	flowImpl := func() IFlowImpl {
+		return &FlowImplLog{}
+	}()
+	registerFlow(flowImpl)
+}
+
+func (impl *FlowImplLog) Name() string {
+	interfaceName := reflect.TypeOf(impl).String()
+	commandName := strings.Split(interfaceName, "FlowImpl")[1]
+	return strings.ToLower(commandName)
+}
+
+func (impl *FlowImplLog) SetCommand(command *FlowCommand) {
+	impl.command = command
+}
 
 func (impl *FlowImplLog) Command() *FlowCommand {
 	return impl.command
-}
-
-func (impl *FlowImplLog) Type() FlowImplType {
-	return impl.implType
 }

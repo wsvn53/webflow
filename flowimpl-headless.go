@@ -2,9 +2,15 @@ package main
 
 import (
 	"github.com/chromedp/chromedp"
+	"reflect"
+	"strings"
 )
 
 type FlowImplHeadless FlowImplBase
+
+func (impl *FlowImplHeadless) Type() FlowImplType {
+	return FlowImplTypeFlag
+}
 
 func (impl *FlowImplHeadless) Do(args...interface{}) error {
 	if len(args) == 0 {
@@ -36,11 +42,23 @@ func (impl *FlowImplHeadless) Do(args...interface{}) error {
 
 //go:generate make IMPL_TYPE=FlowImplHeadless gen-impl
 
+func init() {
+	flowImpl := func() IFlowImpl {
+		return &FlowImplHeadless{}
+	}()
+	registerFlow(flowImpl)
+}
+
+func (impl *FlowImplHeadless) Name() string {
+	interfaceName := reflect.TypeOf(impl).String()
+	commandName := strings.Split(interfaceName, "FlowImpl")[1]
+	return strings.ToLower(commandName)
+}
+
+func (impl *FlowImplHeadless) SetCommand(command *FlowCommand) {
+	impl.command = command
+}
 
 func (impl *FlowImplHeadless) Command() *FlowCommand {
 	return impl.command
-}
-
-func (impl *FlowImplHeadless) Type() FlowImplType {
-	return impl.implType
 }

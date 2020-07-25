@@ -2,10 +2,15 @@ package main
 
 import (
 	"github.com/chromedp/chromedp"
+	reflect "reflect"
 	"strings"
 )
 
 type FlowImplEval FlowImplBase
+
+func (impl *FlowImplEval) Type() FlowImplType {
+	return FlowImplTypeOP
+}
 
 func (impl *FlowImplEval) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
@@ -30,11 +35,23 @@ func (impl *FlowImplEval) Do(args...interface{}) error {
 
 //go:generate make IMPL_TYPE=FlowImplEval gen-impl
 
+func init() {
+	flowImpl := func() IFlowImpl {
+		return &FlowImplEval{}
+	}()
+	registerFlow(flowImpl)
+}
+
+func (impl *FlowImplEval) Name() string {
+	interfaceName := reflect.TypeOf(impl).String()
+	commandName := strings.Split(interfaceName, "FlowImpl")[1]
+	return strings.ToLower(commandName)
+}
+
+func (impl *FlowImplEval) SetCommand(command *FlowCommand) {
+	impl.command = command
+}
 
 func (impl *FlowImplEval) Command() *FlowCommand {
 	return impl.command
-}
-
-func (impl *FlowImplEval) Type() FlowImplType {
-	return impl.implType
 }

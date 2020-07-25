@@ -7,4 +7,4 @@ gen-impl:
 	@echo "> Generating $$GOFILE..";
 	@echo "$$(head -n $$GOLINE $$GOFILE)" > $$GOFILE;
 	cat ./flowimpl-tpl.go | sed "s#FlowImplBase#$$IMPL_TYPE#g" | \
-		grep -v "^\(//\|package \)" >> "$$GOFILE";
+		grep -v "^\(//\|package \|import \)" >> "$$GOFILE";
