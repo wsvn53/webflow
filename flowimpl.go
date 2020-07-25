@@ -1,6 +1,8 @@
 package main
 
-import "strings"
+import (
+	"strings"
+)
 
 type FlowImplBase struct {
 	implType 		FlowImplType
@@ -13,6 +15,7 @@ type IFlowImpl interface {
 	Command()	*FlowCommand
 	Type()		FlowImplType
 	SetCommand(command *FlowCommand)
+	Clone()		IFlowImpl
 }
 
 // flow impl type
@@ -36,8 +39,9 @@ func registerFlow(flowImpl IFlowImpl) {
 
 func NewFlowImpl(command *FlowCommand) IFlowImpl {
 	if flowImpl, ok := registeredFlows[strings.ToLower(*command.Name)]; ok {
-		flowImpl.SetCommand(command)
-		return flowImpl
+		flowCopy := flowImpl.Clone()
+		flowCopy.SetCommand(command)
+		return flowCopy
 	}
 	return &FlowImplNull{}
 }

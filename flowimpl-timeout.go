@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"github.com/jinzhu/copier"
 	"reflect"
 	"strconv"
 	"strings"
@@ -43,4 +44,10 @@ func (impl *FlowImplTimeout) SetCommand(command *FlowCommand) {
 
 func (impl *FlowImplTimeout) Command() *FlowCommand {
 	return impl.command
+}
+
+func (impl *FlowImplTimeout) Clone() IFlowImpl {
+	c := &FlowImplTimeout{}
+	_ = copier.Copy(c, impl)
+	return c
 }

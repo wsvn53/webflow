@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/jinzhu/copier"
 	"reflect"
 	"strings"
 )
@@ -37,4 +38,10 @@ func (impl *FlowImplNull) SetCommand(command *FlowCommand) {
 
 func (impl *FlowImplNull) Command() *FlowCommand {
 	return impl.command
+}
+
+func (impl *FlowImplNull) Clone() IFlowImpl {
+	c := &FlowImplNull{}
+	_ = copier.Copy(c, impl)
+	return c
 }

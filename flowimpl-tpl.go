@@ -3,6 +3,7 @@
 package main
 import "reflect"
 import "strings"
+import "github.com/jinzhu/copier"
 func init() {
 	flowImpl := func() IFlowImpl {
 		return &FlowImplBase{}
@@ -22,4 +23,10 @@ func (impl *FlowImplBase) SetCommand(command *FlowCommand) {
 
 func (impl *FlowImplBase) Command() *FlowCommand {
 	return impl.command
+}
+
+func (impl *FlowImplBase) Clone() IFlowImpl {
+	c := &FlowImplBase{}
+	_ = copier.Copy(c, impl)
+	return c
 }

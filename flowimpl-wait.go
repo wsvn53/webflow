@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/chromedp/chromedp"
+	"github.com/jinzhu/copier"
 	"reflect"
 	"strconv"
 	"strings"
@@ -52,4 +53,10 @@ func (impl *FlowImplWait) SetCommand(command *FlowCommand) {
 
 func (impl *FlowImplWait) Command() *FlowCommand {
 	return impl.command
+}
+
+func (impl *FlowImplWait) Clone() IFlowImpl {
+	c := &FlowImplWait{}
+	_ = copier.Copy(c, impl)
+	return c
 }
