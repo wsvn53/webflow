@@ -1,8 +1,10 @@
 package main
 
 import (
+	"github.com/chromedp/chromedp"
 	"github.com/jinzhu/copier"
 	"reflect"
+	"strconv"
 	"strings"
 )
 
@@ -16,6 +18,14 @@ func (impl *FlowImplScreen) Do(args...interface{}) error {
 	if len(args) == 0 {
 		return nil
 	}
+	opt := args[0].(*chromedp.ExecAllocatorOption)
+	sizes := strings.Split(impl.command.Fields[0].ToString(), "x")
+	if len(sizes) != 2 {
+		return nil
+	}
+	w, _ := strconv.Atoi(sizes[0])
+	h, _ := strconv.Atoi(sizes[1])
+	*opt = chromedp.WindowSize(w, h)
 	return nil
 }
 

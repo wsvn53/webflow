@@ -2,6 +2,9 @@ all:
 	go generate
 	go build
 
+linux:
+	GOOS=linux GOARCH=amd64 go build -o webflow-linux
+
 gen-impl:
 	@[[ -z "$$IMPL_TYPE" ]] && echo "IMPL_TYPE is empty!" && exit 1; exit 0;
 	@echo "> Generating $$GOFILE..";
