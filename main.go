@@ -12,7 +12,9 @@ const VERSION = "v0.0.1"
 type Cli struct {
 	Flowfile	string	`names:"-f, --file" usage:"Specify Flowfile path."`
 	FlowContent	string	`names:"-c, --flow" usage:"Using raw flow content string."`
-	PrintVersion bool	`names:"-v, --version" usage:"Print webflow version."`
+	InsertContent	string	`names:"-i, --insert" usage:"Insert new flow before the flow content."`
+	AppendContent	string	`names:"-a, --append" usage:"Append new flow to the end of flow content."`
+	PrintVersion 	bool	`names:"-v, --version" usage:"Print webflow version."`
 }
 
 func (t *Cli) Metadata() map[string]flag.Flag {
@@ -23,10 +25,16 @@ func (t *Cli) Metadata() map[string]flag.Flag {
 			Desc:    "Webflow can perform a series of web operations defined by Flowfile.",
 		},
 		"--file": {
-			Desc: "path of flowfile to run.",
+			Desc: "Path of flowfile to run.",
 		},
 		"--flow": {
-			Desc: "using flow raw content string.",
+			Desc: "Using flow raw content string.",
+		},
+		"--insert": {
+			Desc: "Insert new flow before the flow content.",
+		},
+		"--append": {
+			Desc: "Append new flow to the end of flow content.",
 		},
 	}
 }
@@ -54,6 +62,16 @@ func main() {
 		assertErr("Stdin", err)
 		flowContents = string(flowBytes)
 		fmt.Println(flowContents)
+	}
+
+	// --insert new content
+	if len(cli.InsertContent) > 0 {
+		flowContents = cli.InsertContent + "\n" + flowContents
+	}
+
+	// --append new content
+	if len(cli.AppendContent) > 0 {
+		flowContents = flowContents + "\n" + cli.AppendContent
 	}
 
 	flow := FlowFromString(flowContents)
