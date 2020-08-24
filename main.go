@@ -2,79 +2,64 @@ package main
 
 import (
 	"fmt"
-	"github.com/cosiner/flag"
+	"github.com/mkideal/cli"
 	"io/ioutil"
 	"os"
 )
 
 const VERSION = "v0.0.1"
 
-type Cli struct {
-	Flowfile	string	`names:"-f, --file" usage:"Specify Flowfile path."`
-	FlowContent	string	`names:"-c, --flow" usage:"Using raw flow content string."`
-	InsertContent	string	`names:"-i, --insert" usage:"Insert new flow before the flow content."`
-	AppendContent	string	`names:"-a, --append" usage:"Append new flow to the end of flow content."`
-	PrintVersion 	bool	`names:"-v, --version" usage:"Print webflow version."`
+type FlowOpts struct {
+	Flowfile	string	`cli:"f,file" usage:"Specify Flowfile path."`
+	FlowContent	string	`cli:"c,flow" usage:"Using raw flow content string."`
+	InsertContent	string	`cli:"i,insert" usage:"Insert new flow before the flow content."`
+	AppendContent	string	`cli:"a,append" usage:"Append new flow to the end of flow content."`
+	PrintVersion 	bool	`cli:"v,version" usage:"Print webflow version."`
+	Help		bool	`cli:"h,help" usage:"Show help."`
 }
 
-func (t *Cli) Metadata() map[string]flag.Flag {
-	return map[string]flag.Flag{
-		"": {
-			Usage:   "webflow",
-			Version: VERSION,
-			Desc:    "Webflow can perform a series of web operations defined by Flowfile.",
-		},
-		"--file": {
-			Desc: "Path of flowfile to run.",
-		},
-		"--flow": {
-			Desc: "Using flow raw content string.",
-		},
-		"--insert": {
-			Desc: "Insert new flow before the flow content.",
-		},
-		"--append": {
-			Desc: "Append new flow to the end of flow content.",
-		},
-	}
+func (flowOpts *FlowOpts) AutoHelp() bool {
+	return flowOpts.Help
 }
 
 func main() {
-	var cli Cli
-	err := flag.NewFlagSet(flag.Flag{}).ParseStruct(&cli, os.Args...)
-	assertErr("FlagSet", err)
+	os.Exit(cli.Run(new(FlowOpts), func(context *cli.Context) error {
+		flowOpts := context.Argv().(*FlowOpts)
 
-	if cli.PrintVersion {
-		fmt.Println(os.Args[0], VERSION)
-		os.Exit(0)
-	}
+		if flowOpts.PrintVersion {
+			fmt.Println(os.Args[0], VERSION)
+			os.Exit(0)
+		}
 
-	flowContents := cli.FlowContent
+		flowContents := flowOpts.FlowContent
 
-	if len(cli.Flowfile) > 0 {
-		flowBytes, err := ioutil.ReadFile(cli.Flowfile)
-		assertErr("Flowfile", err)
-		flowContents = string(flowBytes)
-	}
+		if len(flowOpts.Flowfile) > 0 {
+			flowBytes, err := ioutil.ReadFile(flowOpts.Flowfile)
+			assertErr("Flowfile", err)
+			flowContents = string(flowBytes)
+		}
 
-	if len(flowContents) == 0 {
-		flowBytes, err := ioutil.ReadAll(os.Stdin)
-		assertErr("Stdin", err)
-		flowContents = string(flowBytes)
-		fmt.Println(flowContents)
-	}
+		if len(flowContents) == 0 {
+			flowBytes, err := ioutil.ReadAll(os.Stdin)
+			assertErr("Stdin", err)
+			flowContents = string(flowBytes)
+			fmt.Println(flowContents)
+		}
 
-	// --insert new content
-	if len(cli.InsertContent) > 0 {
-		flowContents = cli.InsertContent + "\n" + flowContents
-	}
+		// --insert new content
+		if len(flowOpts.InsertContent) > 0 {
+			flowContents = flowOpts.InsertContent + "\n" + flowContents
+		}
 
-	// --append new content
-	if len(cli.AppendContent) > 0 {
-		flowContents = flowContents + "\n" + cli.AppendContent
-	}
+		// --append new content
+		if len(flowOpts.AppendContent) > 0 {
+			flowContents = flowContents + "\n" + flowOpts.AppendContent
+		}
 
-	flow := FlowFromString(flowContents)
-	browser := NewBrowser(flow)
-	_ = browser.Run()
+		flow := FlowFromString(flowContents)
+		browser := NewBrowser(flow)
+		_ = browser.Run()
+
+		return nil
+	}))
 }
