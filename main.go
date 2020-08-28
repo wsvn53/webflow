@@ -14,7 +14,8 @@ type FlowOpts struct {
 	FlowContent	string	`cli:"c,flow" usage:"Using raw flow content string."`
 	InsertContent	string	`cli:"i,insert" usage:"Insert new flow before the flow content."`
 	AppendContent	string	`cli:"a,append" usage:"Append new flow to the end of flow content."`
-	PrintVersion 	bool	`cli:"v,version" usage:"Print webflow version."`
+	PrintVersion 	bool	`cli:"version" usage:"Print webflow version."`
+	VerboseMode		bool 	`cli:"v,verbose" usage:"Verbose mode."`
 	Help		bool	`cli:"h,help" usage:"Show help."`
 }
 
@@ -58,6 +59,10 @@ func main() {
 
 		flow := FlowFromString(flowContents)
 		browser := NewBrowser(flow)
+		if flowOpts.VerboseMode {
+			logFunc := fmt.Println
+			browser.logFunc = &logFunc
+		}
 		_ = browser.Run()
 
 		return nil

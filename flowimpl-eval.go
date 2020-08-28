@@ -15,11 +15,11 @@ func (impl *FlowImplEval) Type() FlowImplType {
 
 func (impl *FlowImplEval) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
-	script := impl.command.Fields[0].ToString()
+	script := impl.command.GetFieldString(0)
 	var variableName string
 	if len(impl.command.Fields) > 1 {
-		variableName = impl.command.Fields[0].ToString()
-		script = impl.command.Fields[1].ToString()
+		variableName = impl.command.GetFieldString(0)
+		script = impl.command.GetFieldString(1)
 	}
 
 	var result interface{}
