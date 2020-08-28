@@ -60,8 +60,7 @@ func (browser *Browser) Run() error {
 		}
 		if browser.logFunc != nil {
 			_, _ = (*browser.logFunc)("> Task:",
-				*impl.Command().Name, impl.Command().FieldsString(),
-				)
+				*impl.Command().Name, impl.Command().FieldsString())
 		}
 		err := impl.Do(browser)
 		assertErr("Run", err)

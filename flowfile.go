@@ -27,6 +27,13 @@ type FlowField struct {
 	Int			*int		`| @Int`
 }
 
+func (command *FlowCommand) GetFieldString(i int) string {
+	if i < len(command.Fields) {
+		return command.Fields[i].ToString()
+	}
+	return ""
+}
+
 func (command *FlowCommand) FieldsString() string {
 	var fs []string
 	for _, field := range command.Fields {
