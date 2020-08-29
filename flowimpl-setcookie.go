@@ -9,13 +9,13 @@ import (
 	"strings"
 )
 
-type FlowImplCookie FlowImplBase
+type FlowImplSetCookie FlowImplBase
 
-func (impl *FlowImplCookie) Type() FlowImplType {
+func (impl *FlowImplSetCookie) Type() FlowImplType {
 	return FlowImplTypeOP
 }
 
-func (impl *FlowImplCookie) Do(args...interface{}) error {
+func (impl *FlowImplSetCookie) Do(args...interface{}) error {
 	if len(args) == 0 {
 		return nil
 	}
@@ -26,39 +26,42 @@ func (impl *FlowImplCookie) Do(args...interface{}) error {
 	cookieDomain := impl.command.GetFieldString(2)
 
 	err := chromedp.Run(browser.chromeContext, chromedp.ActionFunc(func(ctx context.Context) error {
-		_, err := network.SetCookie(cookieName, cookieValue).
-			WithDomain(cookieDomain).Do(ctx)
+		cookieParam := network.SetCookie(cookieName, cookieValue)
+		if cookieDomain != "" {
+			cookieParam = cookieParam.WithDomain(cookieDomain)
+		}
+		_, err := cookieParam.Do(ctx)
 		return err
 	}))
 
 	return err
 }
 
-//go:generate make IMPL_TYPE=FlowImplCookie gen-impl
+//go:generate make IMPL_TYPE=FlowImplSetCookie gen-impl
 
 func init() {
 	flowImpl := func() IFlowImpl {
-		return &FlowImplCookie{}
+		return &FlowImplSetCookie{}
 	}()
 	registerFlow(flowImpl)
 }
 
-func (impl *FlowImplCookie) Name() string {
+func (impl *FlowImplSetCookie) Name() string {
 	interfaceName := reflect.TypeOf(impl).String()
 	commandName := strings.Split(interfaceName, "FlowImpl")[1]
 	return strings.ToLower(commandName)
 }
 
-func (impl *FlowImplCookie) SetCommand(command *FlowCommand) {
+func (impl *FlowImplSetCookie) SetCommand(command *FlowCommand) {
 	impl.command = command
 }
 
-func (impl *FlowImplCookie) Command() *FlowCommand {
+func (impl *FlowImplSetCookie) Command() *FlowCommand {
 	return impl.command
 }
 
-func (impl *FlowImplCookie) Clone() IFlowImpl {
-	c := &FlowImplCookie{}
+func (impl *FlowImplSetCookie) Clone() IFlowImpl {
+	c := &FlowImplSetCookie{}
 	_ = copier.Copy(c, impl)
 	return c
 }

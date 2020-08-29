@@ -10,9 +10,9 @@ import (
 	"strings"
 )
 
-type FlowImplGetcookie FlowImplBase
+type FlowImplGetCookie FlowImplBase
 
-func (impl *FlowImplGetcookie) Type() FlowImplType {
+func (impl *FlowImplGetCookie) Type() FlowImplType {
 	return FlowImplTypeOP
 }
 
@@ -23,7 +23,7 @@ func matchCookie(target string, current string) bool {
 	return target == current
 }
 
-func (impl *FlowImplGetcookie) Do(args...interface{}) error {
+func (impl *FlowImplGetCookie) Do(args...interface{}) error {
 	if len(args) == 0 {
 		return nil
 	}
@@ -47,31 +47,31 @@ func (impl *FlowImplGetcookie) Do(args...interface{}) error {
 	return err
 }
 
-//go:generate make IMPL_TYPE=FlowImplGetcookie gen-impl
+//go:generate make IMPL_TYPE=FlowImplGetCookie gen-impl
 
 func init() {
 	flowImpl := func() IFlowImpl {
-		return &FlowImplGetcookie{}
+		return &FlowImplGetCookie{}
 	}()
 	registerFlow(flowImpl)
 }
 
-func (impl *FlowImplGetcookie) Name() string {
+func (impl *FlowImplGetCookie) Name() string {
 	interfaceName := reflect.TypeOf(impl).String()
 	commandName := strings.Split(interfaceName, "FlowImpl")[1]
 	return strings.ToLower(commandName)
 }
 
-func (impl *FlowImplGetcookie) SetCommand(command *FlowCommand) {
+func (impl *FlowImplGetCookie) SetCommand(command *FlowCommand) {
 	impl.command = command
 }
 
-func (impl *FlowImplGetcookie) Command() *FlowCommand {
+func (impl *FlowImplGetCookie) Command() *FlowCommand {
 	return impl.command
 }
 
-func (impl *FlowImplGetcookie) Clone() IFlowImpl {
-	c := &FlowImplGetcookie{}
+func (impl *FlowImplGetCookie) Clone() IFlowImpl {
+	c := &FlowImplGetCookie{}
 	_ = copier.Copy(c, impl)
 	return c
 }
