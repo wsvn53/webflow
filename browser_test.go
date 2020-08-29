@@ -23,6 +23,7 @@ func TestNewBrowser(t *testing.T) {
 	print	$body_text;
 	wait	500;
 	var 	$atext	" pixel 4a";
+	value 	"#kw"	"abc";
 	print	$atext;
 	keys	"#kw" 	$atext;
 	click	"#su";

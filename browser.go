@@ -4,9 +4,12 @@ import (
 	"context"
 	"fmt"
 	"github.com/chromedp/chromedp"
+	"github.com/fatih/color"
 	"log"
 	"os"
+	"reflect"
 	"strconv"
+	"strings"
 )
 
 type Browser struct {
@@ -59,8 +62,9 @@ func (browser *Browser) Run() error {
 			return
 		}
 		if browser.logFunc != nil {
-			if impl.Command() == nil {
-				_, _ = (*browser.logFunc)("> Invalid:", impl)
+			if reflect.TypeOf(impl) == reflect.TypeOf(&FlowImplNull{}) {
+				_, _ = (*browser.logFunc)("> [!] Invalid:",
+					*impl.Command().Name, impl.Command().FieldsString())
 				return
 			}
 			_, _ = (*browser.logFunc)("> Task:",
@@ -89,4 +93,18 @@ func (browser *Browser) SetVariable(name string, value interface{}) {
 		_, _ = fmt.Fprintln(os.Stderr, "Script:", setScript)
 	}
 	assertErr("SetVariable", err)
+}
+
+func (browser *Browser) setLogEnable(enable bool) {
+	if enable == false {
+		browser.logFunc = nil
+	}
+
+	logFunc := func(a ...interface{}) (n int, err error) {
+		if strings.HasPrefix(a[0].(string), "> ") {
+			return color.New(color.FgBlue).Fprintln(os.Stderr, a...)
+		}
+		return fmt.Fprintln(os.Stderr, a...)
+	}
+	browser.logFunc = &logFunc
 }

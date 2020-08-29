@@ -59,12 +59,7 @@ func main() {
 
 		flow := FlowFromString(flowContents)
 		browser := NewBrowser(flow)
-		if flowOpts.VerboseMode {
-			logFunc := func(a ...interface{}) (n int, err error) {
-				return fmt.Fprintln(os.Stderr, a...)
-			}
-			browser.logFunc = &logFunc
-		}
+		browser.setLogEnable(flowOpts.VerboseMode)
 		_ = browser.Run()
 
 		return nil

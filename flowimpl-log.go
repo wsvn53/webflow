@@ -1,9 +1,7 @@
 package main
 
 import (
-	"fmt"
 	"github.com/jinzhu/copier"
-	"os"
 	"reflect"
 	"strings"
 )
@@ -22,10 +20,7 @@ func (impl *FlowImplLog) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
 	logSwitch := impl.command.GetFieldString(0)
 	if logSwitch == "true" {
-		var logFunc = func(a ...interface{}) (n int, err error) {
-			return fmt.Fprintln(os.Stderr, a...)
-		}
-		browser.logFunc = &logFunc
+		browser.setLogEnable(true)
 	}
 
 	return nil

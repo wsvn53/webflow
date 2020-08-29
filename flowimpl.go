@@ -43,5 +43,5 @@ func NewFlowImpl(command *FlowCommand) IFlowImpl {
 		flowCopy.SetCommand(command)
 		return flowCopy
 	}
-	return &FlowImplNull{}
+	return &FlowImplNull{ command: command }
 }
