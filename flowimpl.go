@@ -18,6 +18,10 @@ type IFlowImpl interface {
 	Clone()		IFlowImpl
 }
 
+type IFlowUsage interface {
+	Usage()		string
+}
+
 // flow impl type
 type FlowImplType int
 const (

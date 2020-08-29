@@ -13,6 +13,10 @@ func (impl *FlowImplClick) Type() FlowImplType {
 	return FlowImplTypeOP
 }
 
+func (impl *FlowImplClick) Usage() string {
+	return "click <Selector>		Click element by Selector, same as document.querySelector"
+}
+
 func (impl *FlowImplClick) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
 	textSelector := impl.command.GetFieldString(0)

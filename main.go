@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/fatih/color"
 	"github.com/mkideal/cli"
 	"io/ioutil"
 	"os"
@@ -10,16 +11,27 @@ import (
 const VERSION = "v0.0.1"
 
 type FlowOpts struct {
-	Flowfile	string	`cli:"f,file" usage:"Specify Flowfile path."`
-	FlowContent	string	`cli:"c,flow" usage:"Using raw flow content string."`
+	Flowfile		string	`cli:"f,file" usage:"Specify Flowfile path."`
+	FlowContent		string	`cli:"c,flow" usage:"Using raw flow content string."`
 	InsertContent	string	`cli:"i,insert" usage:"Insert new flow before the flow content."`
 	AppendContent	string	`cli:"a,append" usage:"Append new flow to the end of flow content."`
 	PrintVersion 	bool	`cli:"version" usage:"Print webflow version."`
 	VerboseMode		bool 	`cli:"v,verbose" usage:"Verbose mode."`
-	Help		bool	`cli:"h,help" usage:"Show help."`
+	Help			bool	`cli:"h,help" usage:"Show help."`
 }
 
 func (flowOpts *FlowOpts) AutoHelp() bool {
+	_, _ = color.New(color.Bold).Println("Usage:")
+	fmt.Println()
+
+	for _, flow := range registeredFlows {
+		if m, ok := flow.(IFlowUsage); ok {
+			fmt.Println(" ", m.Usage())
+		}
+	}
+
+	fmt.Println()
+
 	return flowOpts.Help
 }
 

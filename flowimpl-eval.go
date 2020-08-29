@@ -13,6 +13,10 @@ func (impl *FlowImplEval) Type() FlowImplType {
 	return FlowImplTypeOP
 }
 
+func (impl *FlowImplEval) Usage() string {
+	return "eval $variable \"{Javascript Code}\" 	Evaluate Javascript code and save result to $variable"
+}
+
 func (impl *FlowImplEval) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
 	script := impl.command.GetFieldString(0)

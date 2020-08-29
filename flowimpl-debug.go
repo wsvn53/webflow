@@ -14,6 +14,10 @@ func (impl *FlowImplDebug) Type() FlowImplType {
 	return FlowImplTypeLog
 }
 
+func (impl *FlowImplDebug) Usage() string {
+	return "debug <true/false>		Show chromedp debug verbose log"
+}
+
 func (impl *FlowImplDebug) Do(args...interface{}) error {
 	if len(args) == 0 {
 		return nil
