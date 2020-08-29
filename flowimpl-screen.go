@@ -19,7 +19,7 @@ func (impl *FlowImplScreen) Do(args...interface{}) error {
 		return nil
 	}
 	opt := args[0].(*chromedp.ExecAllocatorOption)
-	sizes := strings.Split(impl.command.Fields[0].ToString(), "x")
+	sizes := strings.Split(impl.command.GetFieldString(0), "x")
 	if len(sizes) != 2 {
 		return nil
 	}

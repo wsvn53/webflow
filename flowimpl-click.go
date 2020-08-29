@@ -15,7 +15,7 @@ func (impl *FlowImplClick) Type() FlowImplType {
 
 func (impl *FlowImplClick) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
-	textSelector := impl.command.Fields[0].ToString()
+	textSelector := impl.command.GetFieldString(0)
 
 	err := chromedp.Run(browser.chromeContext,
 		chromedp.Click(textSelector, chromedp.ByQuery, chromedp.NodeVisible),

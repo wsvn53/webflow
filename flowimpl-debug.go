@@ -20,7 +20,7 @@ func (impl *FlowImplDebug) Do(args...interface{}) error {
 	}
 	opt := args[0].(*chromedp.ContextOption)
 
-	if impl.command.Fields[0].ToString() == "true" {
+	if impl.command.GetFieldString(0) == "true" {
 		*opt = chromedp.WithDebugf(log.Printf)
 	}
 

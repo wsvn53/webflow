@@ -15,11 +15,11 @@ func (impl *FlowImplShell) Type() FlowImplType {
 
 func (impl *FlowImplShell) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
-	shellScript := impl.command.Fields[0].ToString()
+	shellScript := impl.command.GetFieldString(0)
 	var variableName string
 	if len(impl.command.Fields) > 1 {
-		variableName = impl.command.Fields[0].ToString()
-		shellScript = impl.command.Fields[1].ToString()
+		variableName = impl.command.GetFieldString(0)
+		shellScript = impl.command.GetFieldString(1)
 	}
 
 	shellCommand := exec.Command("sh", "-c", shellScript)

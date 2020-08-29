@@ -17,7 +17,7 @@ func (impl *FlowImplWait) Type() FlowImplType {
 
 func (impl *FlowImplWait) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
-	waitTarget := impl.command.Fields[0].ToString()
+	waitTarget := impl.command.GetFieldString(0)
 	timeout, err := strconv.Atoi(waitTarget)
 	if err == nil {
 		// wait for timeout

@@ -16,8 +16,8 @@ func (impl *FlowImplVar) Type() FlowImplType {
 
 func (impl *FlowImplVar) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
-	variableName := impl.command.Fields[0].ToString()
-	variableValue := impl.command.Fields[1].ToString()
+	variableName := impl.command.GetFieldString(0)
+	variableValue := impl.command.GetFieldString(1)
 
 	if strings.HasPrefix(variableName, "$") == false {
 		return errors.New(fmt.Sprintf("%s is not a valid variable.", variableName))

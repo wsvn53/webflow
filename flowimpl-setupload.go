@@ -7,15 +7,15 @@ import (
 	"strings"
 )
 
-type FlowImplFiles FlowImplBase
+type FlowImplSetUpload FlowImplBase
 
-func (impl FlowImplFiles) Type() FlowImplType {
+func (impl FlowImplSetUpload) Type() FlowImplType {
 	return FlowImplTypeOP
 }
 
-func (impl *FlowImplFiles) Do(args...interface{}) error {
+func (impl *FlowImplSetUpload) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
-	textSelector := impl.command.Fields[0].ToString()
+	textSelector := impl.command.GetFieldString(0)
 	var files []string
 	for _, f := range impl.command.Fields[1:] {
 		fvalue := f.ToString()
@@ -34,31 +34,31 @@ func (impl *FlowImplFiles) Do(args...interface{}) error {
 	return err
 }
 
-//go:generate make IMPL_TYPE=FlowImplFiles gen-impl
+//go:generate make IMPL_TYPE=FlowImplSetUpload gen-impl
 
 func init() {
 	flowImpl := func() IFlowImpl {
-		return &FlowImplFiles{}
+		return &FlowImplSetUpload{}
 	}()
 	registerFlow(flowImpl)
 }
 
-func (impl *FlowImplFiles) Name() string {
+func (impl *FlowImplSetUpload) Name() string {
 	interfaceName := reflect.TypeOf(impl).String()
 	commandName := strings.Split(interfaceName, "FlowImpl")[1]
 	return strings.ToLower(commandName)
 }
 
-func (impl *FlowImplFiles) SetCommand(command *FlowCommand) {
+func (impl *FlowImplSetUpload) SetCommand(command *FlowCommand) {
 	impl.command = command
 }
 
-func (impl *FlowImplFiles) Command() *FlowCommand {
+func (impl *FlowImplSetUpload) Command() *FlowCommand {
 	return impl.command
 }
 
-func (impl *FlowImplFiles) Clone() IFlowImpl {
-	c := &FlowImplFiles{}
+func (impl *FlowImplSetUpload) Clone() IFlowImpl {
+	c := &FlowImplSetUpload{}
 	_ = copier.Copy(c, impl)
 	return c
 }

@@ -16,7 +16,7 @@ func (impl *FlowImplPrintf) Type() FlowImplType {
 func (impl *FlowImplPrintf) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
 
-	format := impl.command.Fields[0].ToString()
+	format := impl.command.GetFieldString(0)
 	var fields []interface{}
 	for _, v := range impl.command.Fields[1:] {
 		vs := v.ToString()

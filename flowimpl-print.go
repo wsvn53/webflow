@@ -16,7 +16,7 @@ func (impl *FlowImplPrint) Type() FlowImplType {
 func (impl *FlowImplPrint) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
 
-	out := impl.command.Fields[0].ToString()
+	out := impl.command.GetFieldString(0)
 	if _, ok := browser.variableMaps[out]; ok && strings.HasPrefix(out, "$") {
 		fmt.Println(browser.variableMaps[out])
 		return nil

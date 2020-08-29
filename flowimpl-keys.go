@@ -15,8 +15,8 @@ func (impl FlowImplKeys) Type() FlowImplType {
 
 func (impl *FlowImplKeys) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
-	textSelector := impl.command.Fields[0].ToString()
-	typingKeys := impl.command.Fields[1].ToString()
+	textSelector := impl.command.GetFieldString(0)
+	typingKeys := impl.command.GetFieldString(1)
 
 	if strings.HasPrefix(typingKeys, "$") {
 		textValues, ok := browser.variableMaps[typingKeys]

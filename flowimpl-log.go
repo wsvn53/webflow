@@ -20,7 +20,7 @@ func (impl *FlowImplLog) Do(args...interface{}) error {
 	}
 
 	browser := args[0].(*Browser)
-	logSwitch := impl.command.Fields[0].ToString()
+	logSwitch := impl.command.GetFieldString(0)
 	if logSwitch == "true" {
 		var logFunc = func(a ...interface{}) (n int, err error) {
 			return fmt.Fprintln(os.Stderr, a...)

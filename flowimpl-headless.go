@@ -25,16 +25,8 @@ func (impl *FlowImplHeadless) Do(args...interface{}) error {
 
 	switch impl.command.Fields[0].ToString() {
 	case "true":
-		fallthrough
-	case "YES":
-		fallthrough
-	case "1":
 		*opt = chromedp.Flag("headless", true)
 	case "false":
-		fallthrough
-	case "NO":
-		fallthrough
-	case "0":
 		*opt = chromedp.Flag("headless", false)
 	}
 

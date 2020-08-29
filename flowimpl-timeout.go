@@ -17,7 +17,7 @@ func (impl *FlowImplTimeout) Type() FlowImplType {
 
 func (impl *FlowImplTimeout) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
-	timeout, _ := strconv.Atoi(impl.Command().Fields[0].ToString())
+	timeout, _ := strconv.Atoi(impl.Command().GetFieldString(0))
 	browser.chromeContext, browser.chromeCancel = context.WithTimeout(
 		browser.chromeContext, time.Millisecond * time.Duration(timeout))
 	return nil

@@ -18,7 +18,7 @@ func (impl *FlowImplUserAgent) Do(args...interface{}) error {
 		return nil
 	}
 	opt := args[0].(*chromedp.ExecAllocatorOption)
-	*opt = chromedp.UserAgent(impl.command.Fields[0].ToString())
+	*opt = chromedp.UserAgent(impl.command.GetFieldString(0))
 	return nil
 }
 
