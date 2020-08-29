@@ -10,21 +10,23 @@ func TestNewBrowser(t *testing.T) {
 	headless 	false;
 	timeout 	30000;
 	debug		false;
-	log		false;
+	log		true;
 	open	"https://www.baidu.com/";
 	wait	".soutu-btn";
-	value 	$body_text  "#s-top-left";
-	eval 	"console.log($body_text);";
+	setvalue  "#kw" "google";
+	wait 	1000;
+	click 	"#su";
+	eval 	"console.log(1234)";
 	eval 	$result 	"9 * 123";
 	eval 	"console.log($result)";
 	print	$result;
 	print	$body_text;
 	wait	500;
-	value 	$atext	"a";
+	var 	$atext	" pixel 4a";
 	print	$atext;
 	keys	"#kw" 	$atext;
 	click	"#su";
-	wait	5000;
+	wait	15000;
 	`
 	flow := FlowFromString(flowString)
 	b := NewBrowser(flow)

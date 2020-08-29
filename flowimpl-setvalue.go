@@ -7,13 +7,13 @@ import (
 	"strings"
 )
 
-type FlowImplValue FlowImplBase
+type FlowImplSetValue FlowImplBase
 
-func (impl FlowImplValue) Type() FlowImplType {
+func (impl FlowImplSetValue) Type() FlowImplType {
 	return FlowImplTypeOP
 }
 
-func (impl *FlowImplValue) Do(args...interface{}) error {
+func (impl *FlowImplSetValue) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
 	textSelector := impl.command.GetFieldString(0)
 	toValue := impl.command.GetFieldString(1)
@@ -31,31 +31,31 @@ func (impl *FlowImplValue) Do(args...interface{}) error {
 	return err
 }
 
-//go:generate make IMPL_TYPE=FlowImplValue gen-impl
+//go:generate make IMPL_TYPE=FlowImplSetValue gen-impl
 
 func init() {
 	flowImpl := func() IFlowImpl {
-		return &FlowImplValue{}
+		return &FlowImplSetValue{}
 	}()
 	registerFlow(flowImpl)
 }
 
-func (impl *FlowImplValue) Name() string {
+func (impl *FlowImplSetValue) Name() string {
 	interfaceName := reflect.TypeOf(impl).String()
 	commandName := strings.Split(interfaceName, "FlowImpl")[1]
 	return strings.ToLower(commandName)
 }
 
-func (impl *FlowImplValue) SetCommand(command *FlowCommand) {
+func (impl *FlowImplSetValue) SetCommand(command *FlowCommand) {
 	impl.command = command
 }
 
-func (impl *FlowImplValue) Command() *FlowCommand {
+func (impl *FlowImplSetValue) Command() *FlowCommand {
 	return impl.command
 }
 
-func (impl *FlowImplValue) Clone() IFlowImpl {
-	c := &FlowImplValue{}
+func (impl *FlowImplSetValue) Clone() IFlowImpl {
+	c := &FlowImplSetValue{}
 	_ = copier.Copy(c, impl)
 	return c
 }

@@ -59,6 +59,10 @@ func (browser *Browser) Run() error {
 			return
 		}
 		if browser.logFunc != nil {
+			if impl.Command() == nil {
+				_, _ = (*browser.logFunc)("> Invalid:", impl)
+				return
+			}
 			_, _ = (*browser.logFunc)("> Task:",
 				*impl.Command().Name, impl.Command().FieldsString())
 		}
