@@ -9,8 +9,12 @@ import (
 
 type FlowImplSetValue FlowImplBase
 
-func (impl FlowImplSetValue) Type() FlowImplType {
+func (impl *FlowImplSetValue) Type() FlowImplType {
 	return FlowImplTypeOP
+}
+
+func (impl *FlowImplSetValue) Usage() string {
+	return impl.Name() + " <selector> <string|$variable> 	Set the value of element <selector> with <string> or $variable"
 }
 
 func (impl *FlowImplSetValue) Do(args...interface{}) error {

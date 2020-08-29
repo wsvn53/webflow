@@ -9,8 +9,12 @@ import (
 
 type FlowImplSetUpload FlowImplBase
 
-func (impl FlowImplSetUpload) Type() FlowImplType {
+func (impl *FlowImplSetUpload) Type() FlowImplType {
 	return FlowImplTypeOP
+}
+
+func (impl *FlowImplSetUpload) Usage() string {
+	return impl.Name() + " <selector> <file1> <file2> ... 	Set files of element <selector> for upload"
 }
 
 func (impl *FlowImplSetUpload) Do(args...interface{}) error {

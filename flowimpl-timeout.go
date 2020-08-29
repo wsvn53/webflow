@@ -15,6 +15,10 @@ func (impl *FlowImplTimeout) Type() FlowImplType {
 	return FlowImplTypeCtrl
 }
 
+func (impl *FlowImplTimeout) Usage() string {
+	return impl.Name() + " <milliseconds> 	Setup timeout duration, by milliseconds"
+}
+
 func (impl *FlowImplTimeout) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
 	timeout, _ := strconv.Atoi(impl.Command().GetFieldString(0))

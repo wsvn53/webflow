@@ -13,6 +13,10 @@ func (impl *FlowImplPrint) Type() FlowImplType {
 	return FlowImplTypeOP
 }
 
+func (impl *FlowImplPrint) Usage() string {
+	return impl.Name() + " <string|$variable> 	Print out <string> or $variable value"
+}
+
 func (impl *FlowImplPrint) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
 

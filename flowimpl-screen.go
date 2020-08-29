@@ -14,6 +14,10 @@ func (impl *FlowImplScreen) Type() FlowImplType {
 	return FlowImplTypeFlag
 }
 
+func (impl *FlowImplScreen) Usage() string {
+	return impl.Name() + " <width>x<height> 	Setup chrome window size, eg: screen 1080x720"
+}
+
 func (impl *FlowImplScreen) Do(args...interface{}) error {
 	if len(args) == 0 {
 		return nil

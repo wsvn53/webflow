@@ -15,6 +15,10 @@ func (impl *FlowImplWait) Type() FlowImplType {
 	return FlowImplTypeOP
 }
 
+func (impl *FlowImplWait) Usage() string {
+	return impl.Name() + " <milliseconds> 	Wait for timeout with <milliseconds>"
+}
+
 func (impl *FlowImplWait) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
 	waitTarget := impl.command.GetFieldString(0)

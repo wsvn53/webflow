@@ -12,6 +12,10 @@ func (impl *FlowImplLog) Type() FlowImplType {
 	return FlowImplTypeOP
 }
 
+func (impl *FlowImplLog) Usage() string {
+	return impl.Name() + " <true|false> 	Set enable/disable flow verbose log."
+}
+
 func (impl *FlowImplLog) Do(args...interface{}) error {
 	if len(args) == 0 {
 		return nil

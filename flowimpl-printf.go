@@ -13,6 +13,10 @@ func (impl *FlowImplPrintf) Type() FlowImplType {
 	return FlowImplTypeOP
 }
 
+func (impl *FlowImplPrintf) Usage() string {
+	return impl.Name() + " <format> <field1> <$variable> ... 	Print format string, bridge to fmt.Printf function"
+}
+
 func (impl *FlowImplPrintf) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
 

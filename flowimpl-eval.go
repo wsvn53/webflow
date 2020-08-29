@@ -14,7 +14,7 @@ func (impl *FlowImplEval) Type() FlowImplType {
 }
 
 func (impl *FlowImplEval) Usage() string {
-	return "eval $variable \"{Javascript Code}\" 	Evaluate Javascript code and save result to $variable"
+	return impl.Name() + " [$variable] <{Javascript Code}> 	Evaluate Javascript code and save result to $variable"
 }
 
 func (impl *FlowImplEval) Do(args...interface{}) error {

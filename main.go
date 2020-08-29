@@ -6,6 +6,8 @@ import (
 	"github.com/mkideal/cli"
 	"io/ioutil"
 	"os"
+	"sort"
+	"strings"
 )
 
 const VERSION = "v0.0.1"
@@ -22,15 +24,22 @@ type FlowOpts struct {
 
 func (flowOpts *FlowOpts) AutoHelp() bool {
 	_, _ = color.New(color.Bold).Println("Usage:")
-	fmt.Println()
 
+	var flowUsages []string
 	for _, flow := range registeredFlows {
 		if m, ok := flow.(IFlowUsage); ok {
-			fmt.Println(" ", m.Usage())
+			flowUsages = append(flowUsages, "  " + m.Usage())
 		}
 	}
 
-	fmt.Println()
+	sort.Strings(flowUsages)
+
+	flowUsages = append(flowUsages, "")
+	flowUsages = append(flowUsages, "  [..]	Parameter is optional;")
+	flowUsages = append(flowUsages, "  <..>	Parameter is required;")
+	flowUsages = append(flowUsages, "  ...	Follow with one or more parameters;")
+	flowUsages = append(flowUsages, "\n")
+	fmt.Printf("\n%s", strings.Join(flowUsages, "\n"))
 
 	return flowOpts.Help
 }

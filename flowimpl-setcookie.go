@@ -15,6 +15,10 @@ func (impl *FlowImplSetCookie) Type() FlowImplType {
 	return FlowImplTypeOP
 }
 
+func (impl *FlowImplSetCookie) Usage() string {
+	return impl.Name() + " <name> <value> <domain> 	Set cookie key/value to browser context with <domain>"
+}
+
 func (impl *FlowImplSetCookie) Do(args...interface{}) error {
 	if len(args) == 0 {
 		return nil

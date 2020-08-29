@@ -13,6 +13,10 @@ func (impl *FlowImplUserAgent) Type() FlowImplType {
 	return FlowImplTypeFlag
 }
 
+func (impl *FlowImplUserAgent) Usage() string {
+	return impl.Name() + " <string> 	Setup browser UserAgent string"
+}
+
 func (impl *FlowImplUserAgent) Do(args...interface{}) error {
 	if len(args) == 0 {
 		return nil

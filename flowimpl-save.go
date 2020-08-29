@@ -14,6 +14,10 @@ func (impl *FlowImplSave) Type() FlowImplType {
 	return FlowImplTypeOP
 }
 
+func (impl *FlowImplSave) Usage() string {
+	return impl.Name() + " <@file> <string|$variable> 	Save strings or $variable value to <@file>"
+}
+
 func (impl *FlowImplSave) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
 

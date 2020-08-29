@@ -13,6 +13,10 @@ func (impl *FlowImplShell) Type() FlowImplType {
 	return FlowImplTypeOP
 }
 
+func (impl *FlowImplShell) Usage() string {
+	return impl.Name() + " <script|$variable> 	Run custom shell scripts, support $variable"
+}
+
 func (impl *FlowImplShell) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
 	shellScript := impl.command.GetFieldString(0)

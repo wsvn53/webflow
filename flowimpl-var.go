@@ -14,6 +14,10 @@ func (impl *FlowImplVar) Type() FlowImplType {
 	return FlowImplTypeOP
 }
 
+func (impl *FlowImplVar) Usage() string {
+	return impl.Name() + " $variable <string> 	Define $variable with value <string>"
+}
+
 func (impl *FlowImplVar) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
 	variableName := impl.command.GetFieldString(0)

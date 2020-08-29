@@ -13,6 +13,10 @@ func (impl FlowImplKeys) Type() FlowImplType {
 	return FlowImplTypeOP
 }
 
+func (impl *FlowImplKeys) Usage() string {
+	return impl.Name() + " <selector> <keys|$variable> 	Type <keys> or $variable to element <selector>, use chromedp.SendKeys method"
+}
+
 func (impl *FlowImplKeys) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
 	textSelector := impl.command.GetFieldString(0)

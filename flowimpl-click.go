@@ -14,7 +14,7 @@ func (impl *FlowImplClick) Type() FlowImplType {
 }
 
 func (impl *FlowImplClick) Usage() string {
-	return "click <Selector>		Click element by Selector, same as document.querySelector"
+	return impl.Name() + " <selector>		Click element by <selector>, like document.querySelector"
 }
 
 func (impl *FlowImplClick) Do(args...interface{}) error {

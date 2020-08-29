@@ -17,6 +17,10 @@ func (impl *FlowImplLoadCookie) Type() FlowImplType {
 	return FlowImplTypeOP
 }
 
+func (impl *FlowImplLoadCookie) Usage() string {
+	return impl.Name() + " <@file> [domain] 	Load cookies saved in <@file> with <domain>"
+}
+
 func (impl *FlowImplLoadCookie) Do(args...interface{}) error {
 	if len(args) == 0 {
 		return nil

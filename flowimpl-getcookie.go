@@ -16,6 +16,10 @@ func (impl *FlowImplGetCookie) Type() FlowImplType {
 	return FlowImplTypeOP
 }
 
+func (impl *FlowImplGetCookie) Usage() string {
+	return impl.Name() + " $variable [domain] [name] 	Get all cookies, by [domain] or by [name], and save to $variable"
+}
+
 func matchCookie(target string, current string) bool {
 	if target == "" {
 		return true

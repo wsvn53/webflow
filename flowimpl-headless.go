@@ -13,6 +13,10 @@ func (impl *FlowImplHeadless) Type() FlowImplType {
 	return FlowImplTypeFlag
 }
 
+func (impl *FlowImplHeadless) Usage() string {
+	return impl.Name() + " <true|false> 	Set headless flag to chromedp, default is true means don't show browser window"
+}
+
 func (impl *FlowImplHeadless) Do(args...interface{}) error {
 	if len(args) == 0 {
 		return nil

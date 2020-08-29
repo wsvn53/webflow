@@ -13,6 +13,10 @@ func (impl *FlowImplOpen) Type() FlowImplType {
 	return FlowImplTypeOP
 }
 
+func (impl *FlowImplOpen) Usage() string {
+	return impl.Name() + " <url> 	Open <url> in browser"
+}
+
 func (impl *FlowImplOpen) Do(args...interface{}) error {
 	browser := args[0].(*Browser)
 	url := impl.command.GetFieldString(0)
