@@ -23,6 +23,10 @@ type FlowOpts struct {
 }
 
 func (flowOpts *FlowOpts) AutoHelp() bool {
+	if flowOpts.Help == false {
+		return false
+	}
+
 	_, _ = color.New(color.Bold).Println("Usage:")
 
 	var flowUsages []string
@@ -41,7 +45,7 @@ func (flowOpts *FlowOpts) AutoHelp() bool {
 	flowUsages = append(flowUsages, "\n")
 	fmt.Printf("\n%s", strings.Join(flowUsages, "\n"))
 
-	return flowOpts.Help
+	return true
 }
 
 func main() {
