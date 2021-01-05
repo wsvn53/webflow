@@ -10,6 +10,7 @@ func TestNewBrowser(t *testing.T) {
 	headless 	false;
 	timeout 	30000;
 	userdata 	"./test/data";
+	flag 		"disable-extensions"	false;
 	debug		false;
 	log		true;
 	open	"https://www.baidu.com/";
