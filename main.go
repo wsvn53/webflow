@@ -10,15 +10,15 @@ import (
 	"strings"
 )
 
-const VERSION = "v0.0.1"
+const VERSION = "v0.2"
 
 type FlowOpts struct {
 	Flowfile		string	`cli:"f,file" usage:"Specify Flowfile path."`
 	FlowContent		string	`cli:"c,flow" usage:"Using raw flow content string."`
 	InsertContent	string	`cli:"i,insert" usage:"Insert new flow before the flow content."`
 	AppendContent	string	`cli:"a,append" usage:"Append new flow to the end of flow content."`
-	PrintVersion 	bool	`cli:"version" usage:"Print webflow version."`
-	VerboseMode		bool 	`cli:"v,verbose" usage:"Verbose mode."`
+	PrintVersion 	bool	`cli:"v,version" usage:"Print webflow version."`
+	VerboseMode		bool 	`cli:"d,verbose" usage:"Verbose detail mode."`
 	Help			bool	`cli:"h,help" usage:"Show help."`
 }
 
