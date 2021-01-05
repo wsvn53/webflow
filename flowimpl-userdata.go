@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/chromedp/chromedp"
 	"github.com/jinzhu/copier"
+	"github.com/mitchellh/go-homedir"
 	"reflect"
 	"strings"
 )
@@ -22,7 +23,9 @@ func (impl *FlowImplUserData) Do(args...interface{}) error {
 		return nil
 	}
 	opt := args[0].(*chromedp.ExecAllocatorOption)
-	*opt = chromedp.UserAgent(impl.command.GetFieldString(0))
+	userDir := impl.command.GetFieldString(0)
+	userDir, _ = homedir.Expand(userDir)
+	*opt = chromedp.Flag("user-data-dir", userDir)
 	return nil
 }
 

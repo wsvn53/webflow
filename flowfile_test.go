@@ -8,11 +8,13 @@ import (
 func TestFlowFromString(t *testing.T) {
 	flowString := `
 	open	"https://www.example.com/";
+	userdata    "./test/data";
 	timeout 	30;
 	debug		true;
 	text $body_text  "body.div";
 	eval "console.log('hello world!');";
 	eval $result 	"1 + 1";
+	wait 5000;
 	`
 	flow := FlowFromString(flowString)
 

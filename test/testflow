@@ -1,5 +1,6 @@
 screen  	"1024x800";
 headless 	false;
+userdata    "";
 timeout 	30000;
 debug		false;
 log		false;

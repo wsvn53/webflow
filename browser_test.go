@@ -9,6 +9,7 @@ func TestNewBrowser(t *testing.T) {
 	screen  	"1024x800";
 	headless 	false;
 	timeout 	30000;
+	userdata 	"./test/data";
 	debug		false;
 	log		true;
 	open	"https://www.baidu.com/";

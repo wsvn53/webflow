@@ -12,6 +12,7 @@ require (
 	github.com/jinzhu/copier v0.0.0-20190924061706-b57f9002281a
 	github.com/labstack/gommon v0.3.0
 	github.com/mailru/easyjson v0.7.1 // indirect
+	github.com/mitchellh/go-homedir v1.1.0
 	github.com/mkideal/cli v0.2.2
 	golang.org/x/sys v0.0.0-20200602225109-6fdc65e7d980 // indirect
 )
