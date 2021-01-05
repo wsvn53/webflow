@@ -25,6 +25,7 @@ func (impl *FlowImplUserData) Do(args...interface{}) error {
 	opt := args[0].(*chromedp.ExecAllocatorOption)
 	userDir := impl.command.GetFieldString(0)
 	userDir, _ = homedir.Expand(userDir)
+	userDir = resolvePath(userDir)
 	*opt = chromedp.Flag("user-data-dir", userDir)
 	return nil
 }
