@@ -34,8 +34,7 @@ func (impl *FlowImplSetCookie) Do(args...interface{}) error {
 		if cookieDomain != "" {
 			cookieParam = cookieParam.WithDomain(cookieDomain)
 		}
-		_, err := cookieParam.Do(ctx)
-		return err
+		return cookieParam.Do(ctx)
 	}))
 
 	return err

@@ -33,7 +33,7 @@ func (impl *FlowImplSetUpload) Do(args...interface{}) error {
 	}
 
 	err := chromedp.Run(browser.chromeContext,
-		chromedp.SetUploadFiles(textSelector, files, chromedp.ByQuery),
+		chromedp.SetUploadFiles(textSelector, files, chromedp.ByQuery, chromedp.FromNode(browser.switchNode)),
 	)
 	return err
 }

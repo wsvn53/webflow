@@ -22,7 +22,7 @@ func (impl *FlowImplClick) Do(args...interface{}) error {
 	textSelector := impl.command.GetFieldString(0)
 
 	err := chromedp.Run(browser.chromeContext,
-		chromedp.Click(textSelector, chromedp.ByQuery, chromedp.NodeVisible),
+		chromedp.Click(textSelector, chromedp.ByQuery, chromedp.NodeVisible, chromedp.FromNode(browser.switchNode)),
 	)
 	return err
 }

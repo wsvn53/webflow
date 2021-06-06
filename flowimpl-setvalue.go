@@ -30,7 +30,7 @@ func (impl *FlowImplSetValue) Do(args...interface{}) error {
 	}
 
 	err := chromedp.Run(browser.chromeContext,
-		chromedp.SetValue(textSelector, toValue, chromedp.ByQuery),
+		chromedp.SetValue(textSelector, toValue, chromedp.ByQuery, chromedp.FromNode(browser.switchNode)),
 	)
 	return err
 }

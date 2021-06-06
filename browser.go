@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/chromedp"
 	"github.com/fatih/color"
 	"log"
@@ -14,6 +15,7 @@ import (
 
 type Browser struct {
 	webFlow 		*Flow
+	switchNode 		*cdp.Node
 	chromeContext 	context.Context
 	chromeCancel 	context.CancelFunc
 
@@ -71,6 +73,9 @@ func (browser *Browser) Run() error {
 				*impl.Command().Name, impl.Command().FieldsString())
 		}
 		err := impl.Do(browser)
+		if err != nil {
+			chromedp.Cancel(browser.chromeContext)
+		}
 		assertErr("Run", err)
 	})
 	return nil

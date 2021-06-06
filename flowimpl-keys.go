@@ -30,7 +30,7 @@ func (impl *FlowImplKeys) Do(args...interface{}) error {
 	}
 
 	err := chromedp.Run(browser.chromeContext,
-		chromedp.SendKeys(textSelector, typingKeys, chromedp.ByQuery),
+		chromedp.SendKeys(textSelector, typingKeys, chromedp.ByQuery, chromedp.FromNode(browser.switchNode)),
 	)
 	return err
 }

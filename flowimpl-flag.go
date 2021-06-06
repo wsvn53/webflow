@@ -14,7 +14,7 @@ func (impl *FlowImplFlag) Type() FlowImplType {
 }
 
 func (impl *FlowImplFlag) Usage() string {
-	return impl.Name() + " <string> 	Custom browser flags."
+	return impl.Name() + " <string>  <string|bool>	Custom browser flags."
 }
 
 func (impl *FlowImplFlag) Do(args...interface{}) error {

@@ -46,7 +46,7 @@ func (impl *FlowImplLoadCookie) Do(args...interface{}) error {
 			if cookieDomain != "" {
 				param = param.WithDomain(cookieDomain)
 			}
-			_, err = param.Do(ctx)
+			err = param.Do(ctx)
 			assertErr("LoadCookie", err)
 		}
 		return err

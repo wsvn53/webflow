@@ -16,7 +16,7 @@ func (impl *FlowImplWait) Type() FlowImplType {
 }
 
 func (impl *FlowImplWait) Usage() string {
-	return impl.Name() + " <milliseconds> 	Wait for timeout with <milliseconds>"
+	return impl.Name() + "<selector|milliseconds> 	Wait for target with <selector> OR timeout with <milliseconds>"
 }
 
 func (impl *FlowImplWait) Do(args...interface{}) error {
