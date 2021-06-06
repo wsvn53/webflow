@@ -31,7 +31,7 @@ func (impl *FlowImplWait) Do(args...interface{}) error {
 	}
 
 	err = chromedp.Run(browser.chromeContext,
-		chromedp.WaitReady(waitTarget, chromedp.ByQuery),
+		chromedp.WaitVisible(waitTarget, chromedp.ByQuery, chromedp.FromNode(browser.switchNode)),
 	)
 	return err
 }
