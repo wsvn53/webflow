@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/chromedp/chromedp"
 	"github.com/jinzhu/copier"
 	reflect "reflect"
@@ -33,6 +34,10 @@ func (impl *FlowImplEval) Do(args...interface{}) error {
 
 	if strings.HasPrefix(variableName, "$") {
 		browser.SetVariable(variableName, result)
+	}
+
+	if variableName == "" {
+		fmt.Println(result)
 	}
 
 	return nil

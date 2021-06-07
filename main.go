@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-const VERSION = "v0.4"
+const VERSION = "v0.4.1"
 
 type FlowOpts struct {
 	Flowfile		string	`cli:"f,file" usage:"Specify Flowfile path."`
