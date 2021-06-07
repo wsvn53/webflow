@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"github.com/chromedp/chromedp"
@@ -53,7 +52,7 @@ func (impl *FlowImplScreenshot) Do(args...interface{}) error {
 	}
 
 	if interval == "" {
-		err = impl.takeScreenshot(browser.chromeContext, selector, savepath)
+		err = impl.takeScreenshot(browser, selector, savepath)
 		return err
 	}
 	
@@ -70,8 +69,8 @@ func (impl *FlowImplScreenshot) Do(args...interface{}) error {
 			timer := time.NewTimer(time.Duration(ti) * time.Millisecond)
 			<- timer.C
 			nameSuffix := fmt.Sprintf("-%d.png", time.Now().UnixNano()/1000)
-			sp := regexp.MustCompile("\\.png$").ReplaceAllString(savepath, nameSuffix)
-			err = impl.takeScreenshot(browser.chromeContext, selector, sp)
+			sp := regexp.MustCompile(`\.png$`).ReplaceAllString(savepath, nameSuffix)
+			err = impl.takeScreenshot(browser, selector, sp)
 			_, _ = fmt.Fprintln(os.Stderr, "- Screenshot:", selector, sp)
 		}
 	}()
@@ -79,13 +78,14 @@ func (impl *FlowImplScreenshot) Do(args...interface{}) error {
 	return nil
 }
 
-func (impl *FlowImplScreenshot) takeScreenshot(ctx context.Context, selector string, savepath string) error {
+func (impl *FlowImplScreenshot) takeScreenshot(browser *Browser, selector string, savepath string) error {
 	var screenBuffer []byte
 	var err error
 	if selector == "" {
-		err = chromedp.Run(ctx, chromedp.FullScreenshot(&screenBuffer, 90))
+		err = chromedp.Run(browser.chromeContext, chromedp.FullScreenshot(&screenBuffer, 90))
 	} else {
-		err = chromedp.Run(ctx, chromedp.Screenshot(selector, &screenBuffer, chromedp.ByQuery, chromedp.NodeVisible))
+		err = chromedp.Run(browser.chromeContext,
+			chromedp.Screenshot(selector, &screenBuffer, chromedp.ByQuery, chromedp.NodeVisible, chromedp.FromNode(browser.switchNode)))
 	}
 
 	if err == nil && len(screenBuffer) > 0 {
