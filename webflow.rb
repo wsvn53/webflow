@@ -1,7 +1,7 @@
 # Documentation: https://docs.brew.sh/Formula-Cookbook
 #                https://rubydoc.brew.sh/Formula
 class Webflow < Formula
-  desc "Hotcode is an iOS app code hot-reload tool."
+  desc "Webflow: web automation tool based on chromedp"
   homepage "https://git.wsen.me/utils/webflow"
   url "https://git.wsen.me/attachments/f74423a6-8d75-49a9-8de5-5330414c4236"
   version "v0.4"
