@@ -121,7 +121,7 @@ func (browser *Browser) setLogEnable(enable bool) {
 
 func (browser *Browser) handleStop() {
 	stopChan := make(chan os.Signal)
-	signal.Notify(stopChan, syscall.SIGINFO)
+	signal.Notify(stopChan, syscall.Signal(0x1d))
 	_, _ = fmt.Fprintln(os.Stderr, "> CTRL+T to Take Screenshot.")
 	go func() {
 		for {
