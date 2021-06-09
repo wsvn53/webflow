@@ -8,9 +8,13 @@ import (
 	"github.com/fatih/color"
 	"log"
 	"os"
+	"os/signal"
+	"path/filepath"
 	"reflect"
 	"strconv"
 	"strings"
+	"syscall"
+	"time"
 )
 
 type Browser struct {
@@ -58,6 +62,7 @@ func NewBrowser(flow *Flow) *Browser {
 
 func (browser *Browser) Run() error {
 	defer chromedp.Cancel(browser.chromeContext)
+	browser.handleStop()
 
 	browser.webFlow.Walk(func(i int, impl IFlowImpl, stop *bool) {
 		if impl == nil || impl.Type() == FlowImplTypeFlag || impl.Type() == FlowImplTypeLog {
@@ -112,4 +117,22 @@ func (browser *Browser) setLogEnable(enable bool) {
 		return fmt.Fprintln(os.Stderr, a...)
 	}
 	browser.logFunc = &logFunc
+}
+
+func (browser *Browser) handleStop() {
+	stopChan := make(chan os.Signal)
+	signal.Notify(stopChan, syscall.SIGINFO)
+	_, _ = fmt.Fprintln(os.Stderr, "> CTRL+T to Take Screenshot.")
+	go func() {
+		for {
+			<- stopChan
+			screenshotImpl := new(FlowImplScreenshot)
+			screenPath := filepath.Join(".", fmt.Sprintf("Screen-%d.png", time.Now().UnixNano()))
+			fmt.Println("> Received SIGINFO, Screenshot to:", screenPath)
+			err := screenshotImpl.takeScreenshot(browser, "", screenPath)
+			if err != nil {
+				fmt.Println("[!] Screenshot:", err)
+			}
+		}
+	}()
 }

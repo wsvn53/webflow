@@ -82,7 +82,7 @@ func (impl *FlowImplScreenshot) takeScreenshot(browser *Browser, selector string
 	var screenBuffer []byte
 	var err error
 	if selector == "" {
-		err = chromedp.Run(browser.chromeContext, chromedp.FullScreenshot(&screenBuffer, 90))
+		err = chromedp.Run(browser.chromeContext, chromedp.FullScreenshot(&screenBuffer, 100))
 	} else {
 		err = chromedp.Run(browser.chromeContext,
 			chromedp.Screenshot(selector, &screenBuffer, chromedp.ByQuery, chromedp.NodeVisible, chromedp.FromNode(browser.switchNode)))
