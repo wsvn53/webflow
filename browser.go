@@ -81,6 +81,7 @@ func (browser *Browser) Run() error {
 		}
 		assertErr("Run", err)
 	})
+
 	return nil
 }
 
@@ -127,7 +128,8 @@ func (browser *Browser) keyboardLoop() error {
 		assertErr("Key", event.Err)
 		switch event.Key {
 		case keyboard.KeyCtrlC:
-			return nil
+			_ = keyboard.Close()
+			os.Exit(0)
 		case keyboard.KeyCtrlS:
 			screenshotImpl := new(FlowImplScreenshot)
 			screenPath := filepath.Join(".", fmt.Sprintf("Screen-%d.png", time.Now().UnixNano()))
