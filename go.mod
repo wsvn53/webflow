@@ -7,6 +7,7 @@ require (
 	github.com/chromedp/cdproto v0.0.0-20210526005521-9e51b9051fd0
 	github.com/chromedp/chromedp v0.7.3
 	github.com/cosiner/flag v0.4.0
+	github.com/eiannone/keyboard v0.0.0-20200508000154-caf4b762e807 // indirect
 	github.com/fatih/color v1.9.0
 	github.com/jinzhu/copier v0.0.0-20190924061706-b57f9002281a
 	github.com/knq/sysutil v0.0.0-20191005231841-15668db23d08 // indirect

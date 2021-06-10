@@ -5,15 +5,14 @@ import (
 	"fmt"
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/chromedp"
+	"github.com/eiannone/keyboard"
 	"github.com/fatih/color"
 	"log"
 	"os"
-	"os/signal"
 	"path/filepath"
 	"reflect"
 	"strconv"
 	"strings"
-	"syscall"
 	"time"
 )
 
@@ -62,7 +61,6 @@ func NewBrowser(flow *Flow) *Browser {
 
 func (browser *Browser) Run() error {
 	defer chromedp.Cancel(browser.chromeContext)
-	browser.handleStop()
 
 	browser.webFlow.Walk(func(i int, impl IFlowImpl, stop *bool) {
 		if impl == nil || impl.Type() == FlowImplTypeFlag || impl.Type() == FlowImplTypeLog {
@@ -119,20 +117,25 @@ func (browser *Browser) setLogEnable(enable bool) {
 	browser.logFunc = &logFunc
 }
 
-func (browser *Browser) handleStop() {
-	stopChan := make(chan os.Signal)
-	signal.Notify(stopChan, syscall.Signal(0x1d))
-	_, _ = fmt.Fprintln(os.Stderr, "> CTRL+T to Take Screenshot.")
-	go func() {
-		for {
-			<- stopChan
+func (browser *Browser) keyboardLoop() error {
+	keyEvents, err := keyboard.GetKeys(2)
+	if err != nil { return err }
+	defer func() { _ = keyboard.Close() }()
+	fmt.Println("> Using CTRL+S to Take Screenshot..")
+	for {
+		event := <- keyEvents
+		assertErr("Key", event.Err)
+		switch event.Key {
+		case keyboard.KeyCtrlC:
+			return nil
+		case keyboard.KeyCtrlS:
 			screenshotImpl := new(FlowImplScreenshot)
 			screenPath := filepath.Join(".", fmt.Sprintf("Screen-%d.png", time.Now().UnixNano()))
-			fmt.Println("> Received SIGINFO, Screenshot to:", screenPath)
+			fmt.Println("- Screenshot:", screenPath)
 			err := screenshotImpl.takeScreenshot(browser, "", screenPath)
 			if err != nil {
 				fmt.Println("[!] Screenshot:", err)
 			}
 		}
-	}()
+	}
 }

@@ -85,7 +85,10 @@ func main() {
 		flow := FlowFromString(flowContents)
 		browser := NewBrowser(flow)
 		browser.setLogEnable(flowOpts.VerboseMode)
-		_ = browser.Run()
+		go func() { _ = browser.Run() } ()
+
+		// enable keyboard interactive
+		browser.keyboardLoop()
 
 		return nil
 	}))
