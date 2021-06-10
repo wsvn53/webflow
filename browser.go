@@ -68,12 +68,10 @@ func (browser *Browser) Run() error {
 		}
 		if browser.logFunc != nil {
 			if reflect.TypeOf(impl) == reflect.TypeOf(&FlowImplNull{}) {
-				_, _ = (*browser.logFunc)("> [!] Invalid:",
-					*impl.Command().Name, impl.Command().FieldsString())
+				browser.Println("> [!] Invalid:", *impl.Command().Name, impl.Command().FieldsString())
 				return
 			}
-			_, _ = (*browser.logFunc)("> Task:",
-				*impl.Command().Name, impl.Command().FieldsString())
+			browser.Println("> Task:", *impl.Command().Name, impl.Command().FieldsString())
 		}
 		err := impl.Do(browser)
 		if err != nil {
@@ -118,11 +116,15 @@ func (browser *Browser) setLogEnable(enable bool) {
 	browser.logFunc = &logFunc
 }
 
+func (browser *Browser) Println(a ...interface{}) {
+	_, _ = (*browser.logFunc)(a...)
+}
+
 func (browser *Browser) keyboardLoop() error {
 	keyEvents, err := keyboard.GetKeys(2)
 	if err != nil { return err }
 	defer func() { _ = keyboard.Close() }()
-	fmt.Println("> Using CTRL+S to Take Screenshot..")
+	browser.Println("> Using CTRL+S to Take Screenshot..")
 	for {
 		event := <- keyEvents
 		assertErr("Key", event.Err)
@@ -133,10 +135,10 @@ func (browser *Browser) keyboardLoop() error {
 		case keyboard.KeyCtrlS:
 			screenshotImpl := new(FlowImplScreenshot)
 			screenPath := filepath.Join(".", fmt.Sprintf("Screen-%d.png", time.Now().UnixNano()))
-			fmt.Println("- Screenshot:", screenPath)
+			browser.Println("- Screenshot:", screenPath)
 			err := screenshotImpl.takeScreenshot(browser, "", screenPath)
 			if err != nil {
-				fmt.Println("[!] Screenshot:", err)
+				browser.Println("[!] Screenshot:", err)
 			}
 		}
 	}

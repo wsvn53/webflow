@@ -71,7 +71,7 @@ func (impl *FlowImplScreenshot) Do(args...interface{}) error {
 			nameSuffix := fmt.Sprintf("-%d.png", time.Now().UnixNano()/1000)
 			sp := regexp.MustCompile(`\.png$`).ReplaceAllString(savepath, nameSuffix)
 			err = impl.takeScreenshot(browser, selector, sp)
-			_, _ = fmt.Fprintln(os.Stderr, "- Screenshot:", selector, sp)
+			browser.Println("- Screenshot:", selector, sp)
 		}
 	}()
 

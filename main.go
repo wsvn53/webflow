@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/eiannone/keyboard"
 	"github.com/fatih/color"
 	"github.com/mkideal/cli"
 	"io/ioutil"
@@ -10,7 +11,7 @@ import (
 	"strings"
 )
 
-const VERSION = "v0.4.3"
+const VERSION = "v0.4.4"
 
 type FlowOpts struct {
 	Flowfile		string	`cli:"f,file" usage:"Specify Flowfile path."`
@@ -88,6 +89,7 @@ func main() {
 
 		// enable keyboard interactive
 		go func() { _ = browser.keyboardLoop() } ()
+		defer func() { _ = keyboard.Close() }()
 
 		return browser.Run()
 	}))
