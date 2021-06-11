@@ -60,7 +60,10 @@ func NewBrowser(flow *Flow) *Browser {
 }
 
 func (browser *Browser) Run() error {
-	defer chromedp.Cancel(browser.chromeContext)
+	defer browser.Cancel()
+
+	// enable keyboard interactive
+	go func() { _ = browser.keyboardLoop() } ()
 
 	browser.webFlow.Walk(func(i int, impl IFlowImpl, stop *bool) {
 		if impl == nil || impl.Type() == FlowImplTypeFlag || impl.Type() == FlowImplTypeLog {
@@ -75,12 +78,19 @@ func (browser *Browser) Run() error {
 		}
 		err := impl.Do(browser)
 		if err != nil {
-			chromedp.Cancel(browser.chromeContext)
+			browser.Cancel()
 		}
 		assertErr("Run", err)
 	})
 
 	return nil
+}
+
+func (browser *Browser) Cancel() {
+	_ = keyboard.Close()
+	if browser.chromeContext != nil {
+		chromedp.Cancel(browser.chromeContext)
+	}
 }
 
 func (browser *Browser) SetVariable(name string, value interface{}) {
@@ -121,16 +131,18 @@ func (browser *Browser) Println(a ...interface{}) {
 }
 
 func (browser *Browser) keyboardLoop() error {
+	defer browser.Cancel()
+
 	keyEvents, err := keyboard.GetKeys(2)
 	if err != nil { return err }
-	defer func() { _ = keyboard.Close() }()
+
 	browser.Println("> Using CTRL+S to Take Screenshot..")
 	for {
 		event := <- keyEvents
 		assertErr("Key", event.Err)
 		switch event.Key {
 		case keyboard.KeyCtrlC:
-			_ = keyboard.Close()
+			browser.Cancel()
 			os.Exit(0)
 		case keyboard.KeyCtrlS:
 			screenshotImpl := new(FlowImplScreenshot)

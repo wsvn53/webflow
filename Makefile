@@ -1,4 +1,4 @@
-VERSION = 0.4.4
+VERSION = 0.4.5
 FLOWS = headless false; \
 	userdata "~/.webflow"; 		\
 	open "https://git.wsen.me/utils/webflow/releases/new"; 	\
@@ -16,10 +16,10 @@ FLOWS = headless false; \
 
 all:
 	go generate
-	go build
+	go build -ldflags '-X "main.VERSION=v$(VERSION)"'
 
 linux:
-	GOOS=linux GOARCH=amd64 go build -o webflow-linux
+	GOOS=linux GOARCH=amd64 go build -o webflow-linux -ldflags '-X "main.VERSION=v$(VERSION)"'
 
 gen-impl:
 	@[[ -z "$$IMPL_TYPE" ]] && echo "IMPL_TYPE is empty!" && exit 1; exit 0;
@@ -30,3 +30,5 @@ gen-impl:
 
 brew:
 	webflow -c '$(FLOWS)';
+	openssl sha256 ./webflow;
+	
