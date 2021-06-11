@@ -1,4 +1,4 @@
-VERSION = 0.4.5
+VERSION = 0.4.6
 FLOWS = headless false; \
 	userdata "~/.webflow"; 		\
 	open "https://git.wsen.me/utils/webflow/releases/new"; 	\
@@ -14,7 +14,7 @@ FLOWS = headless false; \
 	eval "document.querySelector(\"div.content.active a span[title=webflow]\").parentNode.parentNode.href";  \
 	wait 1000;
 
-all:
+build:
 	go generate
 	go build -ldflags '-X "main.VERSION=v$(VERSION)"'
 
@@ -28,7 +28,9 @@ gen-impl:
 	cat ./flowimpl-tpl.go | sed "s#FlowImplBase#$$IMPL_TYPE#g" | \
 		grep -v "^\(//\|package \|import \)" >> "$$GOFILE";
 
-brew:
-	webflow -c '$(FLOWS)';
-	openssl sha256 ./webflow;
-	
+brew: build
+	url=$$(webflow -c '$(FLOWS)'); \
+		vim -c 'let @q="/url\<Esc>f\"va\"c\"'$$url'\"\<Esc>" | argdo normal @q | ZZ' ./webflow.rb;
+	vim -c 'let @q="/version\<Esc>f\"va\"c\"v$(VERSION)\"\<Esc>" | argdo normal @q | ZZ' ./webflow.rb;
+	sha256=$$(openssl sha256 ./webflow | cut -d= -f2 | cut -d' ' -f2);  \
+		vim -c 'let @q="/sha256\<Esc>f\"va\"c\"'$$sha256'\"\<Esc>" | argdo normal @q | ZZ' ./webflow.rb;
