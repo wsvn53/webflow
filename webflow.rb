@@ -3,9 +3,9 @@
 class Webflow < Formula
   desc "Webflow: web automation tool based on chromedp"
   homepage "https://git.wsen.me/utils/webflow"
-  url "https://git.wsen.me/attachments/94fb0123-abcd-45c5-8747-3aa6756c7b64"
-  version "v0.4.6"
-  sha256 "6562db16e2ff2c152cbb72fabeb3c4e8a314cc71b04ba4592bb603eefcdd4092"
+  url"https://git.wsen.me/attachments/92c91255-b6da-4d34-b752-68654b19eaec"
+  version"v0.4.7"
+  sha256"2c3c9cf2bdfafeeb5afc6f9e08993030738cffa175160fc51a34a654fe1704eb"
 
   def install
     system "chmod", "+x", "webflow"

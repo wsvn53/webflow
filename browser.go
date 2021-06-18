@@ -24,6 +24,7 @@ type Browser struct {
 
 	variableMaps	map[string]string
 	logFunc			*func (a ...interface{})(n int, err error)
+	browserCancelled	bool
 }
 
 func NewBrowser(flow *Flow) *Browser {
@@ -88,7 +89,8 @@ func (browser *Browser) Run() error {
 
 func (browser *Browser) Cancel() {
 	_ = keyboard.Close()
-	if browser.chromeContext != nil {
+	if browser.chromeContext != nil && browser.browserCancelled == false {
+		browser.browserCancelled = true
 		chromedp.Cancel(browser.chromeContext)
 	}
 }
@@ -142,8 +144,7 @@ func (browser *Browser) keyboardLoop() error {
 		assertErr("Key", event.Err)
 		switch event.Key {
 		case keyboard.KeyCtrlC:
-			browser.Cancel()
-			os.Exit(0)
+			return nil
 		case keyboard.KeyCtrlS:
 			screenshotImpl := new(FlowImplScreenshot)
 			screenPath := filepath.Join(".", fmt.Sprintf("Screen-%d.png", time.Now().UnixNano()))
