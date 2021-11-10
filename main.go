@@ -27,6 +27,7 @@ func (flowOpts *FlowOpts) AutoHelp() bool {
 		return false
 	}
 
+	fmt.Printf("webflow %s\n\n", VERSION)
 	_, _ = color.New(color.Bold).Println("Usage:")
 
 	var flowUsages []string
