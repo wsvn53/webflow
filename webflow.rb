@@ -8,6 +8,7 @@ class Webflow < Formula
   sha256"d036a6c42711a667ec5d383083a1ff02c6d07ac91e7bb132d660411518779f49"
 
   def install
+    system "find", ".", "-name", "*webflow*", "-exec", "mv", "{}", "webflow", ";"
     system "chmod", "+x", "webflow"
     bin.install "webflow"
   end
