@@ -18,7 +18,7 @@ func (impl *FlowImplImport) Type() FlowImplType {
 }
 
 func (impl *FlowImplImport) Usage() string {
-	return impl.Name() + " <script|javascript_file> 	Import <script|javascript_file> on new document"
+	return impl.Name() + " <script|javascript_file> 	Import <script|javascript_file> to evaluate on new document created"
 }
 
 func (impl *FlowImplImport) Do(args...interface{}) error {
