@@ -17,7 +17,8 @@
 .idea
 
 webflow
-webflow-linux
+webflow-linux-*
+webflow-darwin-*
 test/data
 test/baidu
 

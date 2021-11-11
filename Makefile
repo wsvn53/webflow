@@ -18,8 +18,11 @@ build:
 	go generate
 	go build -ldflags '-X "main.VERSION=v$(VERSION)"'
 
-linux:
-	GOOS=linux GOARCH=amd64 go build -o webflow-linux -ldflags '-X "main.VERSION=v$(VERSION)"'
+release:
+	go generate
+	GOOS=darwin GOARCH=amd64 go build -ldflags '-X "main.VERSION=v$(VERSION)"' -o webflow-darwin-amd64
+	GOOS=darwin GOARCH=arm64 go build -ldflags '-X "main.VERSION=v$(VERSION)"' -o webflow-darwin-arm64
+	GOOS=linux GOARCH=amd64 go build -ldflags '-X "main.VERSION=v$(VERSION)"' -o webflow-linux-amd64
 
 gen-impl:
 	@[[ -z "$$IMPL_TYPE" ]] && echo "IMPL_TYPE is empty!" && exit 1; exit 0;
