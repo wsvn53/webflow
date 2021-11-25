@@ -9,7 +9,7 @@ This is a tool for performing a series of web tasks, based on the chromedp(https
 You can run the following command to view full help:
 
 ```sh
-webflow v0.5.0
+webflow v0.5.1
 
 Usage:
 
@@ -25,6 +25,7 @@ Usage:
   loadcookie <@file> [domain]   Load cookies saved in <@file> with <domain>
   log <true|false>  Set enable/disable flow verbose log.
   open <url>  Open <url> in browser
+  poll <expressions>  [milliseconds]  Poll result of <expressions>, timeout with <milliseconds> is optional
   print <string|$variable>  Print out <string> or $variable value
   printf <format> <field1> <$variable> ...  Print format string, bridge to fmt.Printf function
   save <@file> <string|$variable>   Save strings or $variable value to <@file>
@@ -34,12 +35,12 @@ Usage:
   setupload <selector> <file1> <file2> ...  Set files of element <selector> for upload
   setvalue <selector> <string|$variable>  Set the value of element <selector> with <string> or $variable
   shell <script|$variable>  Run custom shell scripts, support $variable
-  switch<URL>   Switch context which URL contains <URL>.
+  switch <URL>  Switch context which URL contains <URL>.
   timeout <milliseconds>  Setup timeout duration, by milliseconds
   useragent <string>  Setup browser UserAgent string
   userdata <string>   Setup browser userdata storage path.
   var $variable <string>  Define $variable with value <string>
-  wait<selector|milliseconds>   Wait for target with <selector> OR timeout with <milliseconds>
+  wait <selector|milliseconds>  Wait for target with <selector> OR timeout with <milliseconds>
 
   [..]  Parameter is optional;
   <..>  Parameter is required;
@@ -54,7 +55,7 @@ Options:
   -v, --version   Print webflow version.
   -d, --verbose   Verbose detail mode.
   -h, --help      Show help.
- ```
+```
 
 ### Simple Examples
 
