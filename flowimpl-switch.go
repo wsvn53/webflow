@@ -16,7 +16,7 @@ func (impl FlowImplSwitch) Type() FlowImplType {
 }
 
 func (impl *FlowImplSwitch) Usage() string {
-	return impl.Name() + "<URL> 	Switch context which URL contains <URL>."
+	return impl.Name() + " <URL> 	Switch context which URL contains <URL>."
 }
 
 func (impl *FlowImplSwitch) Do(args...interface{}) error {

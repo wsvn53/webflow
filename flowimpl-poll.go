@@ -17,7 +17,7 @@ func (impl *FlowImplPoll) Type() FlowImplType {
 }
 
 func (impl *FlowImplPoll) Usage() string {
-	return impl.Name() + "<expressions>	[milliseconds] 	Poll result of <expressions>, timeout with <milliseconds> is optional"
+	return impl.Name() + " <expressions>	[milliseconds] 	Poll result of <expressions>, timeout with <milliseconds> is optional"
 }
 
 func (impl *FlowImplPoll) Do(args...interface{}) error {
