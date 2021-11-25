@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/alecthomas/participle"
 	"github.com/alecthomas/participle/lexer"
+	"strconv"
 	"strings"
 )
 
@@ -32,6 +33,14 @@ func (command *FlowCommand) GetFieldString(i int) string {
 		return command.Fields[i].ToString()
 	}
 	return ""
+}
+
+func (command *FlowCommand) GetFieldInt(i int) int {
+	var ret int
+	if i < len(command.Fields) {
+		ret, _ = strconv.Atoi(command.Fields[i].ToString())
+	}
+	return ret
 }
 
 func (command *FlowCommand) FieldsString() string {

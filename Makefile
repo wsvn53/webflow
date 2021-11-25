@@ -1,4 +1,4 @@
-VERSION = 0.5.0
+VERSION = 0.5.1
 FLOWS = headless false; \
 	userdata "~/.webflow"; 		\
 	open "https://git.wsen.me/utils/webflow/releases/new"; 	\
